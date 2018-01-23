@@ -1,0 +1,4 @@
+name: Core
+main: com.blademc.core.BladeMC
+version: "1.0.0"
+api: [1.0.0]
