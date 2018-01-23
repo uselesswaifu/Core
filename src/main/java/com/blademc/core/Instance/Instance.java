@@ -1,20 +1,14 @@
 package com.blademc.core.Instance;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
-
 import cn.nukkit.Server;
 import cn.nukkit.event.Listener;
 import cn.nukkit.form.element.ElementButton;
 import cn.nukkit.form.element.ElementDropdown;
 import cn.nukkit.form.element.ElementLabel;
-import cn.nukkit.form.element.ElementToggle;
 import cn.nukkit.form.window.FormWindowCustom;
 import cn.nukkit.form.window.FormWindowSimple;
 import cn.nukkit.level.Level;
 import cn.nukkit.level.particle.FloatingTextParticle;
-import cn.nukkit.level.particle.Particle;
 import cn.nukkit.utils.DummyBossBar;
 import com.blademc.core.BladeMC;
 import com.blademc.core.Cosmetic.Cosmetics;
@@ -28,6 +22,10 @@ import com.blademc.core.player.event.PartyChatEventBC;
 import com.blademc.core.player.event.PlayerJoinEventBC;
 import com.blademc.core.utils.Lobby.Lobby;
 import com.blademc.core.utils.Lobby.LobbyMessage;
+
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 
 public class  Instance implements Listener {
 
@@ -85,7 +83,6 @@ public class  Instance implements Listener {
 		getServer().getPluginManager().registerEvents(new PlayerJoinEventBC(this), getMain());
 		getServer().getPluginManager().registerEvents(new Cosmetics(this), getMain());
 		getServer().getPluginManager().registerEvents(new FormResponseEvent(this), getMain());
-		getServer().getPluginManager().registerEvents(new com.blademc.Server.ServerEvent(), getMain());
 		getServer().getPluginManager().registerEvents(new PluginsCmd(), getMain());
 		getServer().getPluginManager().registerEvents(new PartyChatEventBC(), getMain());
 
