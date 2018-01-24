@@ -1,29 +1,24 @@
 package com.blademc.core.player.event;
 
-import java.awt.*;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
-
-import javax.imageio.ImageIO;
-
 import cn.nukkit.Player;
-import cn.nukkit.block.Block;
 import cn.nukkit.entity.data.Skin;
 import cn.nukkit.event.EventHandler;
 import cn.nukkit.event.Listener;
 import cn.nukkit.event.player.PlayerJoinEvent;
 import cn.nukkit.event.player.PlayerPreLoginEvent;
 import cn.nukkit.event.player.PlayerQuitEvent;
-import cn.nukkit.event.server.DataPacketReceiveEvent;
-import cn.nukkit.inventory.transaction.data.UseItemData;
-import cn.nukkit.network.protocol.InventoryTransactionPacket;
 import cn.nukkit.utils.DummyBossBar;
 import cn.nukkit.utils.TextFormat;
 import com.blademc.core.Instance.BladeCultist;
 import com.blademc.core.Instance.Instance;
 import com.blademc.core.PictureLogin.ImageMessage;
 import com.blademc.core.PictureLogin.imgmsg.Testing;
+
+import javax.imageio.ImageIO;
+import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 
 public class PlayerJoinEventBC implements Listener {
 
@@ -82,7 +77,7 @@ public class PlayerJoinEventBC implements Listener {
 
 	public void PlayerSettings(Player player) {
 		instance.bossbar.put(player.getName(), new DummyBossBar.Builder(player)
-				.text("&7-&8=&7- &7You're playing on &6&lBlade&3MC &7-&8=&7- &r\n\n&7Purchase ranks @ &eshop.blademc.pw"
+				.text("&7-&8=&7- &7You're playing on &6&lBlade&3MC &7-&8=&7- &r"
 						.replaceAll("&", "§"))
 				.length(100).color(Color.GREEN).build());
 		player.createBossBar(instance.bossbar.get(player.getName()));

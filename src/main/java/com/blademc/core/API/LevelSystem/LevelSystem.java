@@ -54,8 +54,8 @@ public class LevelSystem {
 
     public static void addExperience(Player player, int xp){
         DummyBossBar bar;
-        player.createBossBar(bar = new DummyBossBar.Builder(player).color(25, 25, 25).text(DARK_GRAY + "+" + GREEN +  Integer.toString(xp) + GRAY + " Experience").build());
-        BladeMC.plugin.getServer().getScheduler().scheduleRepeatingTask(BladeMC.plugin, new BossbarTask(BladeMC.plugin, bar), 20);
+        player.createBossBar(bar = new DummyBossBar.Builder(player).text(DARK_GRAY + "+" + GREEN +  Integer.toString(xp) + GRAY + " Experience").build());
+        BladeMC.plugin.getServer().getScheduler().scheduleRepeatingTask(BladeMC.plugin, new BossbarTask(BladeMC.plugin, bar), 1);
     }
 
     public static String[] ExperienceBar(Player player){
