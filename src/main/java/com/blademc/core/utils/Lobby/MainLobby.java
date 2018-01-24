@@ -1,13 +1,5 @@
 package com.blademc.core.utils.Lobby;
 
-import java.awt.*;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
-import java.net.URL;
-import java.util.*;
-import java.util.List;
-
 import cn.nukkit.AdventureSettings;
 import cn.nukkit.Player;
 import cn.nukkit.Server;
@@ -22,7 +14,10 @@ import cn.nukkit.event.EventHandler;
 import cn.nukkit.event.Listener;
 import cn.nukkit.event.block.BlockBreakEvent;
 import cn.nukkit.event.block.BlockPlaceEvent;
-import cn.nukkit.event.entity.*;
+import cn.nukkit.event.entity.EntityDamageByEntityEvent;
+import cn.nukkit.event.entity.EntityDamageEvent;
+import cn.nukkit.event.entity.EntityExplodeEvent;
+import cn.nukkit.event.entity.EntitySpawnEvent;
 import cn.nukkit.event.player.*;
 import cn.nukkit.event.server.DataPacketReceiveEvent;
 import cn.nukkit.inventory.Inventory;
@@ -47,6 +42,13 @@ import com.blademc.core.Instance.Instance;
 import com.blademc.core.player.event.PlayerJoinEventBC;
 
 import javax.imageio.ImageIO;
+import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+import java.net.URL;
+import java.util.*;
+import java.util.List;
 
 public class MainLobby extends LobbyClass implements Listener {
 
@@ -122,7 +124,7 @@ public class MainLobby extends LobbyClass implements Listener {
         }
 
         inv.setItem(4,
-				new ItemBookWritten());
+				new ItemBookWritten().writeBook("uselessnora", "How to Play Fair & Safe", new String[]{"For all the kiddies out there! Here's a great Book for how to stay safe", "Don't argue with people bigger than you! (I know this seems obs but trust me..)", "Wash your hands!"}));
 
 		inv.setItem(7,
 				Item.get(Item.ENDER_CHEST)

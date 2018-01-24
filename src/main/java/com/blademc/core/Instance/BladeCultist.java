@@ -91,7 +91,7 @@ public class BladeCultist extends Player{
 	}
 
 	public DummyBossBar getBossbar(){
-        return instance.bossbar.get(this.getName());
+        return BladeMC.plugin.getInstance().bossbar.get(this.getName());
     }
 
     @Override
