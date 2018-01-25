@@ -107,7 +107,7 @@ public class BladeCultist extends Player{
 	@SuppressWarnings("unchecked")
 	public void cosmeticForm(int type) {
 
-		final Config config = new Config(new File(instance.getMain().getDataFolder() + "/players/"
+		final Config config = new Config(new File(BladeMC.dataFolder + "/players/"
 				+ getName().toLowerCase().charAt(0) + "/" + getName().toLowerCase(), "player.yml"), Config.YAML);
 		switch (type) {
 		case 0: {
@@ -189,7 +189,7 @@ public class BladeCultist extends Player{
 
 	public void addCosmeticItem(Item item) {
 
-		final Config config = new Config(new File(instance.getMain().getDataFolder() + "/players/"
+		final Config config = new Config(new File(BladeMC.dataFolder + "/players/"
 				+ getName().toLowerCase().charAt(0) + "/" + getName().toLowerCase(), "player.yml"), Config.YAML);
 		String type = "gay";
 		if (item.hasCustomBlockData())
