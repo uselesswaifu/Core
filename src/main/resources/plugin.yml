@@ -1,4 +1,5 @@
 name: Core
 main: com.blademc.core.BladeMC
 version: "1.0.0"
+load: POSTWORLD
 api: [1.0.0]

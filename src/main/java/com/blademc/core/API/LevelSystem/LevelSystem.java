@@ -71,7 +71,7 @@ public class LevelSystem {
         return trash;
     }
 
-    private static ArrayList<String> center(ArrayList<String> string, int length) {
+    public static ArrayList<String> center(ArrayList<String> string, int length) {
         ArrayList<String> left = new ArrayList<>();
         for(String s : string){
             if(TextFormat.clean(s).length() > length)

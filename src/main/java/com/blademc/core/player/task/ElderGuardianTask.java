@@ -4,6 +4,7 @@ import cn.nukkit.Player;
 import cn.nukkit.level.Position;
 import cn.nukkit.network.protocol.LevelEventPacket;
 import cn.nukkit.scheduler.NukkitRunnable;
+import com.blademc.core.BladeMC;
 import com.blademc.core.Instance.Instance;
 
 public class ElderGuardianTask extends NukkitRunnable {
@@ -12,7 +13,7 @@ public class ElderGuardianTask extends NukkitRunnable {
 	private final String title;
 	private final String subtitle;
 
-	public ElderGuardianTask(Instance instance, Player player, Position location, String title, String subtitle) {
+	public ElderGuardianTask(BladeMC instance, Player player, Position location, String title, String subtitle) {
 		this.player = player;
 		this.location = location;
 		this.title = title;

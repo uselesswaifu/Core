@@ -1,9 +1,5 @@
 package com.blademc.core.utils.Lobby;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-
 import cn.nukkit.Player;
 import cn.nukkit.entity.weather.EntityLightning;
 import cn.nukkit.event.EventHandler;
@@ -19,21 +15,21 @@ import cn.nukkit.nbt.tag.DoubleTag;
 import cn.nukkit.nbt.tag.FloatTag;
 import cn.nukkit.nbt.tag.ListTag;
 import com.blademc.core.API.PartySystem.PartySystem;
+import com.blademc.core.BladeMC;
 import com.blademc.core.Instance.BladeCultist;
-import com.blademc.core.Instance.Instance;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class Lobby implements Listener {
 
-	Instance instance;
 	public int time = 0;
 	public static final Map<String, String> lobby = new HashMap<>();
 	private final Map<String, LobbyClass> testLobby = new HashMap<>();
 	public com.blademc.core.utils.Lobby.MainLobby mainLobby;
 
-    public Lobby(Instance instance) {
-		this.instance = instance;
-		addLobby("main", new LobbyClass(new MainLobby(instance), this.instance.getMain()));
-		// ((BladeMC) this.getServer().getPluginManager().getPlugin("Core")).getInstance().getLobby().addLobby("mm", new LobbyClass(new MurderMysteryLobby(this)));
+    public Lobby() {
+		addLobby("main", new LobbyClass(new MainLobby(), BladeMC.plugin));
 	}
 
 	public void addLobby(String name, LobbyClass lobbys){

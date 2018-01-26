@@ -1,20 +1,13 @@
 package com.blademc.core.utils.Lobby;
 
-import java.util.Random;
-
 import cn.nukkit.Player;
+import cn.nukkit.Server;
 import cn.nukkit.scheduler.NukkitRunnable;
 import cn.nukkit.utils.TextFormat;
-import com.blademc.core.Instance.Instance;
+
+import java.util.Random;
 
 public class LobbyMessage extends NukkitRunnable {
-
-	private final Instance instance;
-
-	public LobbyMessage(Instance instance) {
-		this.instance = instance;
-
-	}
 
 	public static String messages[] = { "Follow us on Twitter: @BladePlexus", "More Games are in the will Come soon!",
 			"Check out Our Website: blademc.pw", "Hope you have Fun!",
@@ -53,7 +46,7 @@ public class LobbyMessage extends NukkitRunnable {
 	public void run() {
 		final Random random = new Random();
 		final int index = random.nextInt(messages.length);
-		for (final Player player : instance.getServer().getDefaultLevel().getPlayers().values())
+		for (final Player player : Server.getInstance().getDefaultLevel().getPlayers().values())
 			player.sendMessage(TextFormat.BOLD + "" + TextFormat.YELLOW + "- " + TextFormat.RESET + ""
 					+ TextFormat.GRAY + messages[index]);
 

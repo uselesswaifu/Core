@@ -1,29 +1,23 @@
 package com.blademc.core.Cosmetic;
 
-import java.util.Random;
-
 import cn.nukkit.Player;
+import cn.nukkit.Server;
 import cn.nukkit.item.Item;
 import cn.nukkit.item.ItemColorArmor;
 import cn.nukkit.scheduler.NukkitRunnable;
 import cn.nukkit.utils.TextFormat;
 import com.blademc.core.Instance.BladeCultist;
-import com.blademc.core.Instance.Instance;
 import com.blademc.core.utils.Lobby.Lobby;
+
+import java.util.Random;
 
 public class UpdateCosmetic extends NukkitRunnable {
 
-	private final Instance instance;
 	private final Random rand = new Random();
-
-	public UpdateCosmetic(Instance instance) {
-		this.instance = instance;
-
-	}
 
 	@Override
 	public void run() {
-		for (final Player p : instance.getServer().getOnlinePlayers().values()) {
+		for (final Player p : Server.getInstance().getOnlinePlayers().values()) {
 			Integer n = ((BladeCultist) p).currentstyle.get(p.getName());
 			if (n == null)
 				n = -1;
@@ -86,7 +80,6 @@ public class UpdateCosmetic extends NukkitRunnable {
 			player.getInventory().setItem(0, Item.get(Item.TNT, 0, 4).setCustomName(TextFormat.RED + "Explosive TNT"));
 			break;
 		}
-
 	}
 
 	public static void removeGadget(Player player) {

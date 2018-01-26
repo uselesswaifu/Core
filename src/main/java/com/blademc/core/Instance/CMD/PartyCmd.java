@@ -1,29 +1,27 @@
 package com.blademc.core.Instance.CMD;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-
 import cn.nukkit.Player;
 import cn.nukkit.Server;
 import cn.nukkit.command.Command;
 import cn.nukkit.command.CommandSender;
 import cn.nukkit.utils.TextFormat;
-import com.blademc.core.Instance.Instance;
+import com.blademc.core.BladeMC;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public class PartyCmd extends Command{
 
-    private Instance instance;
     public Map<String, ArrayList<Player>> parties;
     private Map<String, ArrayList<String>> invites;
     public Map<String, Boolean> partychat;
 
-    public PartyCmd(Instance instance) {
+    public PartyCmd() {
         super("party");
         this.parties = new HashMap<>();
         this.invites = new HashMap<>();
         this.partychat = new HashMap<>();
-        this.instance = instance;
         setAliases(new String[]{"p", "pc"});
         setUsage("/p or /party");
     }
@@ -73,7 +71,7 @@ public class PartyCmd extends Command{
                             invited.sendMessage(TextFormat.YELLOW + TextFormat.BOLD.toString() + "Party » " + TextFormat.RESET + TextFormat.GRAY + "You have been invited to a party!\nuse /p accept to join ");
                             invites.put(player.getName(), new ArrayList<>());
                             invites.get(player.getName()).add(invited.getName());
-                            instance.getServer().getScheduler().scheduleDelayedTask(instance.getMain(), () -> {
+                            Server.getInstance().getScheduler().scheduleDelayedTask(BladeMC.plugin, () -> {
                                 if (invites.get(player.getName()).contains(invited.getName())) {
                                     invites.get(player.getName()).remove(invited.getName());
                                     invited.sendMessage(TextFormat.YELLOW + TextFormat.BOLD.toString() + "Party » " + TextFormat.RESET + TextFormat.GRAY + "Party invitation has expired");

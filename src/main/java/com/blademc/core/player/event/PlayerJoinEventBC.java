@@ -9,6 +9,7 @@ import cn.nukkit.event.player.PlayerPreLoginEvent;
 import cn.nukkit.event.player.PlayerQuitEvent;
 import cn.nukkit.utils.DummyBossBar;
 import cn.nukkit.utils.TextFormat;
+import com.blademc.core.BladeMC;
 import com.blademc.core.Instance.BladeCultist;
 import com.blademc.core.Instance.Instance;
 import com.blademc.core.PictureLogin.ImageMessage;
@@ -22,12 +23,10 @@ import java.io.IOException;
 
 public class PlayerJoinEventBC implements Listener {
 
-	Instance instance;
 	public static File serverCape;
 
 	public PlayerJoinEventBC(Instance instance) {
-		this.instance = instance;
-		serverCape = new File(instance.getMain().getDataFolder() + "/images/" + "cape.png");
+		serverCape = new File(BladeMC.dataFolder + "/images/" + "cape.png");
 	}
 
 	@EventHandler
@@ -46,7 +45,7 @@ public class PlayerJoinEventBC implements Listener {
 	public void onJoin(PlayerJoinEvent event) {
 		final Player player = event.getPlayer();
 		saveSkin(player);
-		player.addServerSettings(instance.serverMenu);
+		player.addServerSettings(Instance.serverMenu);
 		PlayerSettings(player);
 		((BladeCultist) player).addCoins(0);
 		((BladeCultist) player).setData("keys", 8);
@@ -54,7 +53,7 @@ public class PlayerJoinEventBC implements Listener {
 				TextFormat.BLUE + "Lobby> " + TextFormat.YELLOW + player.getName() + TextFormat.GRAY + " has connected to the " + TextFormat.YELLOW + "Lobby-1");
 
 		try {
-			BufferedImage img = ImageIO.read(new File(instance.getMain().getDataFolder() + "/skins/players/", player.getName() + ".png")).getSubimage(8,8,8,8);
+			BufferedImage img = ImageIO.read(new File(BladeMC.dataFolder + "/skins/players/", player.getName() + ".png")).getSubimage(8,8,8,8);
 
 
 			new ImageMessage(toBufferedImage(img.getScaledInstance(64, 64, 1)), 8, Testing.getChar()).appendCenteredText("", TextFormat.YELLOW + "Welcome to BladeMC!", "", TextFormat.BLUE + "Purchase things @ shop.blademc.pw", "", "", TextFormat.YELLOW + TextFormat.BOLD.toString() + "Have Fun!", "").sendToPlayer(player);
@@ -76,11 +75,11 @@ public class PlayerJoinEventBC implements Listener {
 	}
 
 	public void PlayerSettings(Player player) {
-		instance.bossbar.put(player.getName(), new DummyBossBar.Builder(player)
+		Instance.bossbar.put(player.getName(), new DummyBossBar.Builder(player)
 				.text("&7-&8=&7- &7You're playing on &6&lBlade&3MC &7-&8=&7- &r"
 						.replaceAll("&", "§"))
 				.length(100).color(Color.GREEN).build());
-		player.createBossBar(instance.bossbar.get(player.getName()));
+		player.createBossBar(((BladeCultist) player).getBossbar());
 	}
 
 	public void saveSkin(Player player) {
@@ -107,7 +106,7 @@ public class PlayerJoinEventBC implements Listener {
 		}
 		try {
 			ImageIO.write(finalSkin, "png",
-					new File(instance.getMain().getDataFolder() + "/skins/players/", player.getName() + ".png"));
+					new File(BladeMC.dataFolder + "/skins/players/", player.getName() + ".png"));
 		} catch (final IOException e1) {
 			e1.printStackTrace();
 		}

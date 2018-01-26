@@ -29,82 +29,69 @@ import java.util.Map;
 
 public class  Instance implements Listener {
 
-	BladeMC plugin;
+    private BladeMC mommy;
+	public static Map<String, DummyBossBar> bossbar = new HashMap<>();
 
-	public Map<String, DummyBossBar> bossbar = new HashMap<>();
-
-	public BladeCultist playerclass;
-
-	public FormWindowSimple travelMenu;
-	public FormWindowCustom cosmeticMenu;
-
-	public FormWindowCustom serverMenu;
+	public static FormWindowSimple travelMenu;
+	public static FormWindowCustom cosmeticMenu;
+	public static FormWindowCustom serverMenu;
 
     public PartyCmd party;
 
 	private Lobby lobby;
 
-	public static String maps[] = { "Lobby", "Maps"};
-	public static String servergames[] = { "Survival Games", "Skywars", "Murder Mystery", "BlockParty",
-			"Draw My Thing" };
+	private static String maps[] = { "Lobby", "Maps"};
 
-	public Instance(BladeMC plugin) {
-		this.plugin = plugin;
+	public Instance(BladeMC mommy) {
+	    this.mommy = mommy;
 		for (final String map : maps) {
-			this.plugin.getServer().loadLevel(map);
+			Server.getInstance().loadLevel(map);
 			Level level = Server.getInstance().getLevelByName(map);
-			level.setTime(0);
-			level.stopTime();
+			level.setRainTime(9999);
 			level.setRaining(false);
+			level.setThundering(false);
+			level.stopTime();
 		}
 	}
 
 	public void load() {
-		getServer().getPluginManager().registerEvents(lobby = new Lobby(this), getMain());
-		serverMenu = new FormWindowCustom("Server Menu");
-		serverMenu.addElement(new ElementLabel("Welcome to the BladeMC Cult!"));
-		serverMenu.addElement(new ElementDropdown("Your Language", Arrays.asList("English", "Japanese")));
-
-		travelMenu = new FormWindowSimple("Travel", "Navigate the Server");
-		travelMenu.addButton(new ElementButton("Game Type Selector"));
-		travelMenu.addButton(new ElementButton("Preferences"));
-		travelMenu.addButton(new ElementButton("Profile Menu"));
-		// for (final String game : servergames)
-		// compassMenu.addButton(new ElementButton(game));
-
-		cosmeticMenu = new FormWindowCustom("Cosmetic Menu");
-		cosmeticMenu
-				.addElement(new ElementDropdown("Cosmetic?", Arrays.asList("Styles", "Gadgets", "Pets", "Particles")));
+        mommy.getServer().getPluginManager().registerEvents(lobby = new Lobby(), BladeMC.plugin);
 		this.registerEvents();
+		this.registerForms();
 		this.registerCommands();
 	}
 
-	public void registerEvents() {
-		getServer().getPluginManager().registerEvents(new PlayerJoinEventBC(this), getMain());
-		getServer().getPluginManager().registerEvents(new Cosmetics(this), getMain());
-		getServer().getPluginManager().registerEvents(new FormResponseEvent(this), getMain());
-		getServer().getPluginManager().registerEvents(new PluginsCmd(), getMain());
-		getServer().getPluginManager().registerEvents(new PartyChatEventBC(), getMain());
+    private void registerForms() {
+        serverMenu = new FormWindowCustom("Server Menu");
+        serverMenu.addElement(new ElementLabel("Welcome to the BladeMC Cult!"));
+        serverMenu.addElement(new ElementDropdown("Your Language", Arrays.asList("English", "Japanese")));
 
-		getServer().getScheduler().scheduleRepeatingTask(getMain(), new UpdateCosmetic(this), 5, true);
-		getServer().getScheduler().scheduleRepeatingTask(getMain(), new LobbyMessage(this), 60 * 20, true);
-	}
+        travelMenu = new FormWindowSimple("Travel", "Navigate the Server");
+        travelMenu.addButton(new ElementButton("Game Type Selector"));
+        travelMenu.addButton(new ElementButton("Preferences"));
+        travelMenu.addButton(new ElementButton("Profile Menu"));
 
-    public void registerCommands() {
-        getServer().getCommandMap().register("report", new ReportCmd(this));
-        getServer().getCommandMap().register("nick", new NickCmd(this));
-        getServer().getCommandMap().register("party",party = new PartyCmd(this));
+        cosmeticMenu = new FormWindowCustom("Cosmetic Menu");
+        cosmeticMenu.addElement(new ElementDropdown("Cosmetic?", Arrays.asList("Styles", "Gadgets", "Pets", "Particles")));
     }
 
+    private void registerEvents() {
+        mommy.getServer().getPluginManager().registerEvents(new PlayerJoinEventBC(this), BladeMC.plugin);
+        mommy.getServer().getPluginManager().registerEvents(new Cosmetics(), BladeMC.plugin);
+        mommy.getServer().getPluginManager().registerEvents(new FormResponseEvent(), BladeMC.plugin);
+        mommy.getServer().getPluginManager().registerEvents(new PluginsCmd(), BladeMC.plugin);
+        mommy.getServer().getPluginManager().registerEvents(new PartyChatEventBC(), BladeMC.plugin);
 
-
-	public Server getServer() {
-		return plugin.getServer();
+        mommy.getServer().getScheduler().scheduleRepeatingTask(BladeMC.plugin, new UpdateCosmetic(), 5, true);
+        mommy.getServer().getScheduler().scheduleRepeatingTask(BladeMC.plugin, new LobbyMessage(), 60 * 20, true);
 	}
 
-	public BladeMC getMain() {
-		return plugin;
-	}
+    private void registerCommands() {
+        mommy.getServer().getCommandMap().register("report", new ReportCmd(this));
+        mommy.getServer().getCommandMap().register("nick", new NickCmd(this));
+        mommy.getServer().getCommandMap().register("party",party = new PartyCmd());
+    }
+
 
 	public Lobby getLobby() {
 		return lobby;

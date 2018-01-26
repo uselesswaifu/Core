@@ -16,13 +16,10 @@ public class BladeMC extends PluginBase implements Listener {
     @Override
     public void onEnable() {
         getLogger().info(TextFormat.RED + "BladeMC has been enabled!");
-        getServer().getPluginManager().registerEvents(new Instance(this), this);
-        instance = new Instance(this);
-        instance.load();
-        dataFolder = this.getDataFolder();
         plugin = this;
-
-
+        dataFolder = this.getDataFolder();
+        getServer().getPluginManager().registerEvents( instance = new Instance(this), this);
+        instance.load();
     }
 
     public Instance getInstance() {

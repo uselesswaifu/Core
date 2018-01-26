@@ -1,5 +1,25 @@
 package com.blademc.core.player.event;
 
+import cn.nukkit.Player;
+import cn.nukkit.Server;
+import cn.nukkit.event.EventHandler;
+import cn.nukkit.event.Listener;
+import cn.nukkit.event.player.PlayerFormRespondedEvent;
+import cn.nukkit.event.player.PlayerSettingsRespondedEvent;
+import cn.nukkit.form.element.ElementButton;
+import cn.nukkit.form.element.ElementButtonImageData;
+import cn.nukkit.form.response.FormResponseSimple;
+import cn.nukkit.form.window.FormWindow;
+import cn.nukkit.form.window.FormWindowCustom;
+import cn.nukkit.form.window.FormWindowSimple;
+import cn.nukkit.network.protocol.TextPacket;
+import cn.nukkit.utils.Config;
+import cn.nukkit.utils.TextFormat;
+import com.blademc.core.BladeMC;
+import com.blademc.core.Cosmetic.MysteryBox;
+import com.blademc.core.Cosmetic.UpdateCosmetic;
+import com.blademc.core.Instance.BladeCultist;
+
 import java.io.File;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -9,39 +29,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.UUID;
 
-import cn.nukkit.Player;
-import cn.nukkit.Server;
-import cn.nukkit.event.EventHandler;
-import cn.nukkit.event.Listener;
-import cn.nukkit.event.player.PlayerFormRespondedEvent;
-import cn.nukkit.event.player.PlayerSettingsRespondedEvent;
-import cn.nukkit.event.server.DataPacketReceiveEvent;
-import cn.nukkit.form.element.ElementButton;
-import cn.nukkit.form.element.ElementButtonImageData;
-import cn.nukkit.form.response.FormResponseSimple;
-import cn.nukkit.form.window.FormWindow;
-import cn.nukkit.form.window.FormWindowCustom;
-import cn.nukkit.form.window.FormWindowSimple;
-import cn.nukkit.lang.BaseLang;
-import cn.nukkit.network.protocol.ServerSettingsResponsePacket;
-import cn.nukkit.network.protocol.TextPacket;
-import cn.nukkit.utils.Config;
-import cn.nukkit.utils.TextFormat;
-import com.blademc.core.Cosmetic.MysteryBox;
-import com.blademc.core.Cosmetic.UpdateCosmetic;
-import com.blademc.core.Instance.BladeCultist;
-import com.blademc.core.Instance.Instance;
-
-import javax.xml.soap.Text;
-
 public class FormResponseEvent implements Listener {
-
-	private final Instance instance;
-
-	public FormResponseEvent(Instance instance) {
-		this.instance = instance;
-	}
-
 
 	@EventHandler
     public void respond(PlayerSettingsRespondedEvent event){
@@ -127,7 +115,7 @@ public class FormResponseEvent implements Listener {
 						message = "Hacking";
 						break;
 					}
-					final Config config = new Config(new File(instance.getMain().getDataFolder(), "reports.yml"),
+					final Config config = new Config(new File(BladeMC.dataFolder, "reports.yml"),
 							Config.YAML);
 					final String name = ((FormWindowCustom) event.getWindow()).getResponse().getInputResponse(1);
 					player.sendMessage("Reported " + name + " for " + message);
@@ -209,22 +197,18 @@ public class FormResponseEvent implements Listener {
 					case 2:
 						profileMenu(player);
 						break;
-					case 3:
-						instance.getServer().dispatchCommand(player, "games bp");
-						event.getWindow().setResponse(null);
-						break;
 					}
 					break;
 				case "Game Type Selector":
 					switch (id) {
 					case 0:
-						instance.getLobby().setLobby("main", player);
+						BladeMC.plugin.getInstance().getLobby().setLobby("main", player);
 						break;
 					case 1:
-						instance.getLobby().setLobby("sw", player);
+						BladeMC.plugin.getInstance().getLobby().setLobby("sw", player);
 						break;
 						case 2:
-                            instance.getLobby().setLobby("sw", player);
+							BladeMC.plugin.getInstance().getLobby().setLobby("sw", player);
                             break;
 
 
@@ -260,7 +244,7 @@ public class FormResponseEvent implements Listener {
 
 	@SuppressWarnings("unchecked")
 	public void NewReports(Player player) {
-		final Config config = new Config(new File(instance.getMain().getDataFolder(), "reports.yml"), Config.YAML);
+		final Config config = new Config(new File(BladeMC.dataFolder, "reports.yml"), Config.YAML);
 		final FormWindowSimple window = new FormWindowSimple("New", null);
 		window.setContent("View player reports");
 		window.addButton(new ElementButton("Back", new ElementButtonImageData("url",
@@ -286,7 +270,7 @@ public class FormResponseEvent implements Listener {
 
 	@SuppressWarnings("unchecked")
 	public void BannedReports(Player player) {
-		final Config config = new Config(new File(instance.getMain().getDataFolder(), "reports.yml"), Config.YAML);
+		final Config config = new Config(new File(BladeMC.dataFolder, "reports.yml"), Config.YAML);
 		final FormWindowSimple window = new FormWindowSimple("Banned", null);
 		window.setContent("View player reports");
 		window.addButton(new ElementButton("Back", new ElementButtonImageData("url",
@@ -305,7 +289,7 @@ public class FormResponseEvent implements Listener {
 
 	@SuppressWarnings("unchecked")
 	public void DeletedReports(Player player) {
-		final Config config = new Config(new File(instance.getMain().getDataFolder(), "reports.yml"), Config.YAML);
+		final Config config = new Config(new File(BladeMC.dataFolder, "reports.yml"), Config.YAML);
 		final FormWindowSimple window = new FormWindowSimple("Deleted", null);
 		window.setContent("View player reports");
 		window.addButton(new ElementButton("Back", new ElementButtonImageData("url",

@@ -1,26 +1,25 @@
 package com.blademc.core.utils.TNT;
 
+import cn.nukkit.Server;
+import cn.nukkit.block.Block;
+import cn.nukkit.level.Level;
+import cn.nukkit.math.Vector3;
+import com.blademc.core.BladeMC;
+
 import java.util.Deque;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentLinkedDeque;
-
-import cn.nukkit.block.Block;
-import cn.nukkit.level.Level;
-import cn.nukkit.math.Vector3;
-import com.blademc.core.Instance.Instance;
 
 /**
  * Created by avigh on 8/25/2016.
  */
 public class PastedBlock {
 
-	static Instance instance;
 	private final double x, y, z;
 	private final int id, data;
 
-	public PastedBlock(Instance instance, double x, double y, double z, int id, int data) {
-		PastedBlock.instance = instance;
+	public PastedBlock(double x, double y, double z, int id, int data) {
 		this.x = x;
 		this.y = y;
 		this.z = z;
@@ -40,7 +39,7 @@ public class PastedBlock {
 
 		public BlockQueue(final Level world) {
 
-			instance.getServer().getScheduler().scheduleRepeatingTask(instance.getMain(), () -> {
+			Server.getInstance().getScheduler().scheduleRepeatingTask(BladeMC.plugin, () -> {
 				PastedBlock block = null;
 				boolean hasTime = true;
 				final long start = System.currentTimeMillis();

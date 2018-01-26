@@ -1,7 +1,6 @@
 package com.blademc.core.utils.Lobby;
 
 import cn.nukkit.Player;
-import cn.nukkit.Server;
 import cn.nukkit.event.Listener;
 import cn.nukkit.plugin.Plugin;
 import com.blademc.core.BladeMC;
@@ -21,7 +20,7 @@ public class LobbyClass{
     public LobbyClass(Object lobby, Object plugin)
     {
         this.lobby = lobby;
-        Server.getInstance().getPluginManager().registerEvents((Listener) lobby, (Plugin) plugin);
+        BladeMC.plugin.getServer().getPluginManager().registerEvents((Listener) lobby, (Plugin) plugin);
     }
 
 

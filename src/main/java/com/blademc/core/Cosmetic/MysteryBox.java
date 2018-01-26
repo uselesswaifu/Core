@@ -1,13 +1,14 @@
 package com.blademc.core.Cosmetic;
 
 import cn.nukkit.Player;
+import cn.nukkit.Server;
 import cn.nukkit.item.Item;
 import cn.nukkit.level.Level;
 import cn.nukkit.level.Sound;
 import cn.nukkit.level.particle.DustParticle;
 import cn.nukkit.math.Vector3;
 import cn.nukkit.nbt.tag.CompoundTag;
-import cn.nukkit.scheduler.PluginTask;
+import cn.nukkit.scheduler.NukkitRunnable;
 import cn.nukkit.scheduler.TaskHandler;
 import cn.nukkit.utils.TextFormat;
 import com.blademc.core.BladeMC;
@@ -15,7 +16,7 @@ import com.blademc.core.Instance.BladeCultist;
 
 import java.util.Random;
 
-public class MysteryBox extends PluginTask<BladeMC> {
+public class MysteryBox extends NukkitRunnable {
 	private final Player player;
 	private static int time = 70;
 	public static String legend = TextFormat.DARK_GRAY + "[" + TextFormat.RESET + "" + TextFormat.DARK_PURPLE + "LEGEND"
@@ -46,12 +47,11 @@ public class MysteryBox extends PluginTask<BladeMC> {
 					.setCustomBlockData(new CompoundTag().putString("type", "particles").putInt("identify", 7)), };
 
 	public MysteryBox(BladeMC instance, Player player) {
-		super(instance);
 		this.player = player;
 	}
 
 	@Override
-	public void onRun(int currentTick) {
+	public void run() {
 		time--;
 		if (time >= 1) {
 		    player.level.addSound(player, Sound.RANDOM_ORB);
@@ -64,12 +64,12 @@ public class MysteryBox extends PluginTask<BladeMC> {
 			player.getEnderChestInventory().setItem(12, first);
             player.getEnderChestInventory().setItem(13, second);
             player.getEnderChestInventory().setItem(14, third);
-			getOwner().instance.getCrateParticle(0).setTitle("&7".replaceAll("&", "§") + first.getName());
-			getOwner().instance.getCrateParticle(1).setTitle("&7>> &f".replaceAll("&", "§") + second.getName() + " &7<<".replaceAll("&", "§"));
-			getOwner().instance.getCrateParticle(2).setTitle("&7".replaceAll("&", "§") + third.getName());
-			player.getLevel().addParticle(getOwner().instance.getCrateParticle(0), player);
-			player.getLevel().addParticle(getOwner().instance.getCrateParticle(1), player);
-			player.getLevel().addParticle(getOwner().instance.getCrateParticle(2), player);
+			BladeMC.plugin.getInstance().getCrateParticle(0).setTitle("&7".replaceAll("&", "§") + first.getName());
+			BladeMC.plugin.getInstance().getCrateParticle(1).setTitle("&7>> &f".replaceAll("&", "§") + second.getName() + " &7<<".replaceAll("&", "§"));
+			BladeMC.plugin.getInstance().getCrateParticle(2).setTitle("&7".replaceAll("&", "§") + third.getName());
+			player.getLevel().addParticle(BladeMC.plugin.getInstance().getCrateParticle(0), player);
+			player.getLevel().addParticle(BladeMC.plugin.getInstance().getCrateParticle(1), player);
+			player.getLevel().addParticle(BladeMC.plugin.getInstance().getCrateParticle(2), player);
 		}
 		if (time == 0) {
 			player.level.addSound(player, Sound.NOTE_SNARE);
@@ -78,17 +78,17 @@ public class MysteryBox extends PluginTask<BladeMC> {
 			spawnParticle();
 			((BladeCultist) player).addCosmeticItem(second);
 
-			getOwner().instance.getCrateParticle(0).setTitle(" ");
-			getOwner().instance.getCrateParticle(1).setTitle(TextFormat.GRAY + "" + Integer.toString(((BladeCultist) player).checkData("keys")) + " Boxes");
-			getOwner().instance.getCrateParticle(2).setTitle(" ");
+			BladeMC.plugin.getInstance().getCrateParticle(0).setTitle(" ");
+			BladeMC.plugin.getInstance().getCrateParticle(1).setTitle(TextFormat.GRAY + "" + Integer.toString(((BladeCultist) player).checkData("keys")) + " Boxes");
+			BladeMC.plugin.getInstance().getCrateParticle(2).setTitle(" ");
 		}
 		if (time <= -10) {
-			getOwner().instance.getServer().getDefaultLevel()
-					.addParticle(getOwner().instance.getCrateParticle(0), player);
-			getOwner().instance.getServer().getDefaultLevel()
-					.addParticle(getOwner().instance.getCrateParticle(1), player);
-			getOwner().instance.getServer().getDefaultLevel()
-					.addParticle(getOwner().instance.getCrateParticle(2), player);
+			Server.getInstance().getDefaultLevel()
+					.addParticle(BladeMC.plugin.getInstance().getCrateParticle(0), player);
+			Server.getInstance().getDefaultLevel()
+					.addParticle(BladeMC.plugin.getInstance().getCrateParticle(1), player);
+			Server.getInstance().getDefaultLevel()
+					.addParticle(BladeMC.plugin.getInstance().getCrateParticle(2), player);
 			//task.cancel();
 			//cancel();
 			time = 20;
@@ -97,7 +97,7 @@ public class MysteryBox extends PluginTask<BladeMC> {
 
 	private void spawnParticle() {
 		final Random rand = new Random();
-		TaskHandler task = getOwner().getServer().getScheduler().scheduleRepeatingTask(getOwner().instance.getMain(), () -> {
+		TaskHandler task = Server.getInstance().getScheduler().scheduleRepeatingTask(BladeMC.plugin, () -> {
 			final Level level = player.getLevel();
 			final double x = 34.5;
 			final double y = 95;
