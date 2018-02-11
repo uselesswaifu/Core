@@ -1,5 +1,4 @@
-name: Core
-main: com.blademc.core.BladeMC
+name: ElissaMC
+main: com.elissamc.ElissaMC
 version: "1.0.0"
-load: POSTWORLD
 api: [1.0.0]
