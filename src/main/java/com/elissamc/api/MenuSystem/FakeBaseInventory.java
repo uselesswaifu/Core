@@ -26,15 +26,15 @@ import java.util.UUID;
 abstract class FakeBaseInventory extends BaseInventory {
 
     private Map<UUID, Vector3> holders = new HashMap<>();
-    private double INVENTORY_HEIGHT = 3;
 
-    public FakeBaseInventory(InventoryHolder holder, InventoryType type) {
+    FakeBaseInventory(InventoryHolder holder, InventoryType type) {
         super(holder, type);
     }
 
     @Override
     public void onOpen(Player player) {
         super.onOpen(player);
+        double INVENTORY_HEIGHT = 3;
         holders.put(player.getUniqueId(), player.add(0, INVENTORY_HEIGHT));
         this.sendBlocks(player);
         this.sendFakeTile(player);
@@ -71,7 +71,7 @@ abstract class FakeBaseInventory extends BaseInventory {
         }, 4);
     }
 
-    public void sendFakeTile(Player player) {
+    private void sendFakeTile(Player player) {
         Vector3 hold = holders.get(player.getUniqueId());
         {
             BlockEntityDataPacket pk = new BlockEntityDataPacket();
@@ -95,7 +95,7 @@ abstract class FakeBaseInventory extends BaseInventory {
         pk.y = (int) hold.getY();
         pk.z = (int) hold.getZ();
         CompoundTag nbt = new CompoundTag().putString("id", BlockEntityChest.CHEST);
-        nbt.putString("CustomName", "Testing");
+        nbt.putString("CustomName", getName());
         nbt.putInt("pairx", (int) hold.getX());
         nbt.putInt("pairz", (int) hold.getZ());
         try {

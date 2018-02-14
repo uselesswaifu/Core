@@ -17,13 +17,14 @@ import static cn.nukkit.utils.TextFormat.*;
 public class CosmeticMenu implements Listener {
 
     public static void showMenu(Player player) {
-        ChestInventory inv = new ChestInventory(player, InventoryType.DOUBLE_CHEST, "cosmetic", "&d&lCosmetics");
+        ChestInventory inv = new ChestInventory(player, InventoryType.DOUBLE_CHEST, "cosmetic", "&c&lCosmetics");
         mainMenu(inv);
         player.addWindow(inv);
     }
 
     private static void mainMenu(ChestInventory inv) {
         inv.setSize(54);
+        inv.clearAll();
         inv.setItem(20, Item.get(Item.BONE).setCustomName(TextFormat.colorize("&c&lPets")).setCustomBlockData(new CompoundTag().putString("menu", "pets")));
         inv.setItem(21, Item.get(Item.SADDLE).setCustomName(TextFormat.colorize("&c&lMounts")).setCustomBlockData(new CompoundTag().putString("menu", "mounts")));
         inv.setItem(22, Item.get(Item.BLAZE_ROD).setCustomName(TextFormat.colorize("&c&lTrails")).setCustomBlockData(new CompoundTag().putString("menu", "trails")));
@@ -80,8 +81,18 @@ public class CosmeticMenu implements Listener {
             if (action.getSourceItem().hasCustomBlockData()) {
                 if (data.contains("menu")) {
                     assert inventory != null;
+                    if (data.getString("menu").equals("main"))
+                        mainMenu(inventory);
                     if (data.getString("menu").equals("pets"))
-                        petsMenu(inventory, event.getTransaction().getSource());
+                        petsMenu(inventory);
+                }
+
+                if (data.contains("pet")) {
+                    assert inventory != null;
+                    if (data.getString("pet").equals("clear")){
+                        event.getTransaction().getSource().sendMessage(RED + "Cleared pet selection!");
+                        inventory.close(event.getTransaction().getSource());
+                    }
                 }
 
                 if (data.contains("ignore") && data.getBoolean("ignore"))
@@ -90,13 +101,10 @@ public class CosmeticMenu implements Listener {
         }
     }
 
-    private void petsMenu(ChestInventory inventory, Player player) {
+    private void petsMenu(ChestInventory inventory) {
         inventory.clearAll();
-        inventory.setSize(44);
-        inventory.setName(GRAY + "Pets");
         inventory.setItem(10, Item.get(Item.RAW_PORKCHOP).setCustomName(AQUA + "Spawn" + DARK_PURPLE + " Piggy" + RESET + "\n\nOink! Oink!\n\nPermission: YES!").setCustomBlockData(new CompoundTag().putString("pet", "pig")));
         inventory.setItem(39, Item.get(Item.ARROW).setCustomName(RED + "Main Menu").setCustomBlockData(new CompoundTag().putString("menu", "main")));
         inventory.setItem(41, Item.get(Item.REDSTONE_BLOCK).setCustomName(RED + "Clear current pet").setCustomBlockData(new CompoundTag().putString("pet", "clear")));
-        inventory.sendContents(player);
     }
 }

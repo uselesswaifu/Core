@@ -116,14 +116,16 @@ public class ParkourSystem extends VanillaCommand implements Listener {
                     TimeUnit.MILLISECONDS.toMinutes(oldtim),
                     TimeUnit.MILLISECONDS.toSeconds(oldtim) -
                             TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(oldtim)));
-            player.sendMessage(TextFormat.colorize("&a&lYour time &e&l%time &a&ldid not beat your previous record of &e&l%old&a&l!\n" +
-                    "&a&lTry again to beat your old record!").replaceAll("%time", time).replaceAll("%old", old));
+            player.sendMessage(TextFormat.colorize("&a&lYour time &e&l%time &a&ldid not beat your previous record of &e&l%old&a&l!\n".replaceAll("%time", time).replaceAll("%old", old) +
+                    "&a&lTry again to beat your old record!"));
         }
 
         if(millis < (long) config.get(player.getUniqueId().toString())) {
-            player.sendMessage(TextFormat.colorize("&a&lThat's a new record of &e&l%time&a&l! Try again to get an even\n" +
-                    "better record!".replaceAll("%time", time)));
+            player.sendMessage(TextFormat.colorize("&a&lThat's a new record of &e&l%time&a&l! Try again to get an even\n".replaceAll("%time", time) +
+                    "better record!"));
         }
+        config.set(player.getUniqueId().toString(), millis);
+        config.save();
         parkour.remove(player.getUniqueId());
         timer.remove(player.getUniqueId());
     }
