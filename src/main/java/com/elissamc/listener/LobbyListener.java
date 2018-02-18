@@ -28,6 +28,7 @@ import com.blademc.uselesswaifu.FloatingPassage;
 import com.blademc.uselesswaifu.object.CraftParticle;
 import com.elissamc.ElissaMC;
 import com.elissamc.api.MenuSystem.menu.CosmeticMenu;
+import com.elissamc.api.MenuSystem.menu.StoreMenu;
 import com.elissamc.api.ParticleSystem.WeirdEffect;
 import com.elissamc.task.ServerTutorial.ServerTutorial;
 
@@ -41,6 +42,7 @@ public class LobbyListener implements Listener {
 
     public LobbyListener() {
         Server.getInstance().getPluginManager().registerEvents(new CosmeticMenu(), ElissaMC.plugin);
+        Server.getInstance().getPluginManager().registerEvents(new StoreMenu(), ElissaMC.plugin);
         Skin skin = new Skin(new File(ElissaMC.dataFolder, "satan.png"));
         Location loc = new Location(-150.5, 83, 329.5, Server.getInstance().getDefaultLevel());
         final CompoundTag nbt = new CompoundTag()
@@ -130,10 +132,15 @@ public class LobbyListener implements Listener {
             return;
         if (!event.getItem().hasCustomBlockData())
             return;
+        if(event.getItem().getCustomBlockData().getBoolean("leave")){
+            ElissaMC.plugin.getInstance().getGameHandler().removeGame(event.getPlayer());
+        }
         String s = event.getItem().getCustomBlockData().getString("lobby");
         event.setCancelled();
         if (s.equals("cosmetics"))
             CosmeticMenu.showMenu(event.getPlayer());
+        if (s.equals("store"))
+            StoreMenu.showMenu(event.getPlayer());
     }
 
     private void initPlayer(Player player) {

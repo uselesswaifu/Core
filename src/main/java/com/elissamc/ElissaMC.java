@@ -8,7 +8,7 @@ import com.elissamc.instance.Instance;
 import java.io.File;
 
 public class ElissaMC extends PluginBase implements Listener {
-    public Instance instance;
+    private Instance instance;
     public static File dataFolder;
     public static ElissaMC plugin;
 

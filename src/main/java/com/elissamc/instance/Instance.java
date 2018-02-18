@@ -6,6 +6,7 @@ import cn.nukkit.level.Level;
 import cn.nukkit.permission.Permission;
 import com.elissamc.ElissaMC;
 import com.elissamc.api.ParkourSystem.ParkourSystem;
+import com.elissamc.games.GameHandler;
 import com.elissamc.instance.CMD.NickCmd;
 import com.elissamc.instance.CMD.PartyCmd;
 import com.elissamc.instance.CMD.PluginsCmd;
@@ -18,6 +19,7 @@ public class Instance implements Listener {
     private static String maps[] = {"world"};
     public PartyCmd party;
     private ElissaMC mommy;
+    private GameHandler gameHandler;
 
     public Instance(ElissaMC mommy) {
         this.mommy = mommy;
@@ -35,6 +37,7 @@ public class Instance implements Listener {
         this.registerEvents();
         this.registerCommands();
         this.registerPerms();
+        gameHandler = new GameHandler();
     }
 
     private void registerPerms() {
@@ -54,5 +57,9 @@ public class Instance implements Listener {
         mommy.getServer().getCommandMap().register("report", new ReportCmd(this));
         mommy.getServer().getCommandMap().register("nick", new NickCmd(this));
         mommy.getServer().getCommandMap().register("party", party = new PartyCmd());
+    }
+
+    public GameHandler getGameHandler() {
+        return gameHandler;
     }
 }
