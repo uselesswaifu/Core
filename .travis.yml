@@ -1,3 +1,7 @@
 language: java
 sudo: false
 script: mvn clean verify
+before_install:
+  - mvn install:install-file -Dfile=FloatingPassage.jar \
+     -DgroupId=com.blademc.uselesswaifu -DartifactId=floatingpassage \
+     -Dversion=1.0 -Dpackaging=jar
