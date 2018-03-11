@@ -32,7 +32,6 @@ public class StoreMenu implements Listener {
     private static void mainMenu(ChestInventory inv) {
         inv.setSize(9);
         try {
-
             List<Category> cat = ((BuycraftPlugin) Server.getInstance().getPluginManager().getPlugin("BuycraftX")).getApiClient().retrieveListing().getCategories();
             for (Category c : cat) {
                 inv.setItem(c.getOrder(), Item.get(Item.NAME_TAG).setCustomName("Category: " + c.getName()).setCustomBlockData(new CompoundTag().putString("category", c.getName())));

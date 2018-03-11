@@ -125,7 +125,7 @@ public class CosmeticMenu implements Listener {
             inventory.setItem(i - 1, Item.get(Item.REDSTONE_BLOCK).setCustomName("" + BOLD + RED + "CANCEL").setCustomBlockData(new CompoundTag().putBoolean("purcahse", false)));
         }
     }
-
+  
     private void petsMenu(ChestInventory inventory) {
         inventory.clearAll();
         inventory.setItem(10, Item.get(Item.RAW_PORKCHOP).setCustomName(AQUA + "Spawn" + DARK_PURPLE + " Piggy" + RESET + "\n\nOink! Oink!\n\nPermission: NO!").setCustomBlockData(new CompoundTag().putString("pet", "pig")));
