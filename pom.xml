@@ -26,12 +26,22 @@
             <artifactId>nukkit</artifactId>
             <version>1.0-SNAPSHOT</version>
         </dependency>
+        <dependency>
+            <groupId>com.github.BuycraftPlugin.BuycraftX</groupId>
+            <artifactId>buycraftx-bukkit</artifactId>
+            <version>v10.0</version>
+        </dependency>
     </dependencies>
+
 
     <repositories>
         <repository>
             <id>potestas-repo</id>
             <url>https://repo.potestas.xyz/main/</url>
+        </repository>
+        <repository>
+            <id>jitpack.io</id>
+            <url>https://jitpack.io</url>
         </repository>
     </repositories>
 
