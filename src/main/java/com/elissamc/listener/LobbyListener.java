@@ -26,6 +26,7 @@ import cn.nukkit.nbt.tag.ListTag;
 import cn.nukkit.scheduler.NukkitRunnable;
 import com.elissamc.ElissaMC;
 import com.elissamc.api.MenuSystem.menu.CosmeticMenu;
+import com.elissamc.api.MenuSystem.menu.GamesMenu;
 import com.elissamc.api.MenuSystem.menu.StoreMenu;
 import com.elissamc.api.ParticleSystem.WeirdEffect;
 import com.elissamc.task.ServerTutorial.ServerTutorial;
@@ -43,6 +44,7 @@ public class LobbyListener implements Listener {
     public LobbyListener() {
         Server.getInstance().getPluginManager().registerEvents(new CosmeticMenu(), ElissaMC.plugin);
         Server.getInstance().getPluginManager().registerEvents(new StoreMenu(), ElissaMC.plugin);
+        Server.getInstance().getPluginManager().registerEvents(new GamesMenu(), ElissaMC.plugin);
         Skin skin = new Skin(new File(ElissaMC.dataFolder, "satan.png"));
         Location loc = new Location(-150.5, 83, 329.5, Server.getInstance().getDefaultLevel());
         final CompoundTag nbt = new CompoundTag()
@@ -141,6 +143,8 @@ public class LobbyListener implements Listener {
             CosmeticMenu.showMenu(event.getPlayer());
         if (s.equals("store"))
             StoreMenu.showMenu(event.getPlayer());
+        if(s.equals("servers"))
+            GamesMenu.showMenu(event.getPlayer());
     }
 
     private void initPlayer(Player player) {

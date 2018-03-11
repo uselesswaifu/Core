@@ -13,6 +13,10 @@ public class GameHandler implements Listener {
     private final Map<String, GameParent> games = new HashMap<>();
     private final Map<UUID, String> playerStatus = new HashMap<>();
 
+    public Map<String, GameParent> getGames(){
+        return games;
+    }
+
     public boolean joinGame(Player player, String s) {
         if (games.containsKey(s)) {
             games.get(s).addPlayer(player);
