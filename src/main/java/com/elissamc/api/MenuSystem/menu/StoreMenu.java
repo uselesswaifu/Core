@@ -62,7 +62,7 @@ public class StoreMenu implements Listener {
                     sendPackages(inventory, name);
                 }
 
-                if(data.contains("package")){
+                if (data.contains("package")) {
                     String name = data.getString("package");
                     sendInfo(event.getTransaction().getSource(), inventory, name);
                 }
@@ -80,11 +80,11 @@ public class StoreMenu implements Listener {
         try {
             List<Category> cat = ((BuycraftPlugin) Server.getInstance().getPluginManager().getPlugin("BuycraftX")).getApiClient().retrieveListing().getCategories();
             for (Category c : cat) {
-                if(c.getName().equals(name)){
-                 for(Package p : c.getPackages()){
-                     inventory.setItem(22, Item.get(Item.BOOK_AND_QUILL).setCustomName("" + BOLD + RED + "CANCEL").setCustomBlockData(new CompoundTag().putBoolean("main", true)));
-                     inventory.setItem(p.getOrder(), Item.get(Item.PAPER).setCustomName("Package: " + p.getName()).setCustomBlockData(new CompoundTag().putString("package", p.getName())));
-                 }
+                if (c.getName().equals(name)) {
+                    for (Package p : c.getPackages()) {
+                        inventory.setItem(22, Item.get(Item.BOOK_AND_QUILL).setCustomName("" + BOLD + RED + "CANCEL").setCustomBlockData(new CompoundTag().putBoolean("main", true)));
+                        inventory.setItem(p.getOrder(), Item.get(Item.PAPER).setCustomName("Package: " + p.getName()).setCustomBlockData(new CompoundTag().putString("package", p.getName())));
+                    }
                 }
             }
         } catch (IOException | ApiException e) {
@@ -92,15 +92,15 @@ public class StoreMenu implements Listener {
         }
     }
 
-    private void sendInfo(Player player, ChestInventory inventory, String name){
+    private void sendInfo(Player player, ChestInventory inventory, String name) {
         try {
             List<Category> cat = ((BuycraftPlugin) Server.getInstance().getPluginManager().getPlugin("BuycraftX")).getApiClient().retrieveListing().getCategories();
             for (Category c : cat) {
-                    for(Package p : c.getPackages()){
-                        if(p.getName().equals(name)){
-                            inventory.close(player);
-                            String salestatus = p.getSale().isActive() ? p.getSale().getDiscount().toString() : "NO";
-                            player.sendMessage("" + GRAY + p.getName() + ", " + YELLOW + "PRICE: " + GRAY + p.getPrice() + " EFFECTIVE PRICE: " + p.getEffectivePrice() + " SALE: " + salestatus);
+                for (Package p : c.getPackages()) {
+                    if (p.getName().equals(name)) {
+                        inventory.close(player);
+                        String salestatus = p.getSale().isActive() ? p.getSale().getDiscount().toString() : "NO";
+                        player.sendMessage("" + GRAY + p.getName() + ", " + YELLOW + "PRICE: " + GRAY + p.getPrice() + " EFFECTIVE PRICE: " + p.getEffectivePrice() + " SALE: " + salestatus);
                     }
                 }
             }

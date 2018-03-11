@@ -61,7 +61,7 @@ public class LevelSystem {
         String placeholder = TextFormat.BOLD + "";
         String space = "";
         for (int i = 0; i < 20; i++) {
-            placeholder += AQUA + "▝";
+            placeholder += AQUA + "_";
             space += "  ";
         }
         String lvl = AQUA + "Lvl. 3" + space.substring(0, space.length() / 2) + "Lvl. 4";

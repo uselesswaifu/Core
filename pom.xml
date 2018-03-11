@@ -4,7 +4,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>com.elissamc</groupId>
+    <groupId>com.blademc.core</groupId>
     <artifactId>Core</artifactId>
     <version>1.0-SNAPSHOT</version>
     <build>
@@ -26,11 +26,27 @@
             <artifactId>nukkit</artifactId>
             <version>1.0-SNAPSHOT</version>
         </dependency>
+        <dependency>
+            <groupId>com.github.uselesswaifu</groupId>
+            <artifactId>Holograms</artifactId>
+            <version>2b11159765</version>
+        </dependency>
+        <dependency>
+            <groupId>com.github.BuycraftPlugin.BuycraftX</groupId>
+            <artifactId>buycraftx-nukkit</artifactId>
+            <version>master</version>
+        </dependency>
     </dependencies>
+
+
     <repositories>
         <repository>
             <id>potestas-repo</id>
             <url>https://repo.potestas.xyz/main/</url>
+        </repository>
+        <repository>
+            <id>jitpack.io</id>
+            <url>https://jitpack.io</url>
         </repository>
     </repositories>
 
