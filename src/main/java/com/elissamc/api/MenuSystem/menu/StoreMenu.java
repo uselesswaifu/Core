@@ -11,10 +11,10 @@ import cn.nukkit.inventory.transaction.action.InventoryAction;
 import cn.nukkit.item.Item;
 import cn.nukkit.nbt.tag.CompoundTag;
 import com.elissamc.api.MenuSystem.ChestInventory;
-import net.buycraft.plugin.bukkit.BuycraftPlugin;
 import net.buycraft.plugin.client.ApiException;
 import net.buycraft.plugin.data.Category;
 import net.buycraft.plugin.data.Package;
+import net.buycraft.plugin.nukkit.BuycraftPlugin;
 
 import java.io.IOException;
 import java.util.List;

@@ -12,9 +12,6 @@ import cn.nukkit.item.Item;
 import cn.nukkit.nbt.tag.CompoundTag;
 import cn.nukkit.utils.TextFormat;
 import com.elissamc.api.MenuSystem.ChestInventory;
-import net.buycraft.plugin.client.ApiException;
-import net.buycraft.plugin.data.Category;
-import net.buycraft.plugin.nukkit.BuycraftPlugin;
 
 import java.io.IOException;
 import java.util.List;
@@ -100,7 +97,6 @@ public class CosmeticMenu implements Listener {
                         suitsMenu(inventory);
                     if (data.getString("menu").equals("crate"))
                         crateMenu(inventory);
-                    buycraftMenu(inventory);
                 }
 
                 if (data.contains("pet")) {
@@ -127,17 +123,6 @@ public class CosmeticMenu implements Listener {
         }
         for (int i : cancel) {
             inventory.setItem(i - 1, Item.get(Item.REDSTONE_BLOCK).setCustomName("" + BOLD + RED + "CANCEL").setCustomBlockData(new CompoundTag().putBoolean("purcahse", false)));
-        }
-    }
-
-    private void buycraftMenu(ChestInventory inventory) {
-        try {
-            List<Category> cat = ((BuycraftPlugin) Server.getInstance().getPluginManager().getPlugin("BuycraftX")).getApiClient().retrieveListing().getCategories();
-            for (Category c : cat) {
-                Server.getInstance().broadcastMessage(c.getName());
-            }
-        } catch (IOException | ApiException e) {
-            e.printStackTrace();
         }
     }
 
