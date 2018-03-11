@@ -1,5 +1,5 @@
 language: java
 sudo: false
 script: mvn clean verify
-install:
+before_script:
   - sudo mvn org.apache.maven.plugins:maven-install-plugin:2.5.2:install-file -Dfile=libs/Holograms.jar
