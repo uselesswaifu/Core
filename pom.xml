@@ -27,6 +27,11 @@
             <version>1.0-SNAPSHOT</version>
         </dependency>
         <dependency>
+            <groupId>com.github.uselesswaifu</groupId>
+            <artifactId>Holograms</artifactId>
+            <version>2b11159765</version>
+        </dependency>
+        <dependency>
             <groupId>com.github.BuycraftPlugin.BuycraftX</groupId>
             <artifactId>buycraftx-bukkit</artifactId>
             <version>v10.0</version>
