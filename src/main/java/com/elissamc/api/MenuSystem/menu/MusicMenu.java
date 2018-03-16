@@ -9,28 +9,26 @@ import cn.nukkit.inventory.InventoryType;
 import cn.nukkit.inventory.transaction.action.InventoryAction;
 import cn.nukkit.item.Item;
 import cn.nukkit.nbt.tag.CompoundTag;
-import cn.nukkit.utils.DyeColor;
-import com.elissamc.ElissaMC;
 import com.elissamc.api.MenuSystem.ChestInventory;
-import com.elissamc.games.GameParent;
 
-import java.util.Map;
-
-public class GamesMenu implements Listener {
+public class MusicMenu implements Listener {
 
     public static void showMenu(Player player) {
-        ChestInventory inv = new ChestInventory(player, InventoryType.CHEST, "games", "Server Menu", 9);
+        ChestInventory inv = new ChestInventory(player, InventoryType.CHEST, "music", "Jukebox", 27);
         mainMenu(inv);
         player.addWindow(inv);
     }
 
     private static void mainMenu(ChestInventory inv) {
-        inv.setSize(9);
-        int i = 0;
-        for (Map.Entry<String, GameParent> game : ElissaMC.plugin.getInstance().getGameHandler().getGames().entrySet()) {
-            inv.setItem(i, Item.get(Item.WOOL, DyeColor.LIME.getWoolData()).setCustomName(game.getKey()).setCustomBlockData(new CompoundTag().putString("game", game.getKey())));
-            i++;
-        }
+        inv.setItem(0, Item.get(Item.RECORD_CAT).setCustomBlockData(new CompoundTag().putString("song", "cat")));
+
+        inv.setItem(18, Item.get(Item.BEDROCK).setCustomName("Stop Song").setCustomBlockData(new CompoundTag().putString("action", "stop")));
+        inv.setItem(20, Item.get(Item.FIRE_CHARGE).setCustomName("Random Song").setCustomBlockData(new CompoundTag().putString("action", "random")));
+        inv.setItem(21, Item.get(Item.BEACON).setCustomName("Change volume").setCustomBlockData(new CompoundTag().putString("action", "volume")));
+        inv.setItem(23, Item.get(Item.SIGN).setCustomName("Start on login").setCustomBlockData(new CompoundTag().putString("action", "login")));
+        inv.setItem(24, Item.get(Item.BLAZE_POWDER).setCustomName("Shuffle").setCustomBlockData(new CompoundTag().putString("action", "shuffle")));
+        inv.setItem(25, Item.get(Item.ARROW).setCustomName("Previous").setCustomBlockData(new CompoundTag().putString("action", "previous")));
+        inv.setItem(26, Item.get(Item.ARROW).setCustomName("Next").setCustomBlockData(new CompoundTag().putString("action", "next")));
     }
 
     @EventHandler
@@ -40,7 +38,7 @@ public class GamesMenu implements Listener {
             CompoundTag data = action.getSourceItem().getCustomBlockData();
             for (Inventory inv : event.getTransaction().getInventories()) {
                 if (inv instanceof ChestInventory) {
-                    if (((ChestInventory) inv).getOwner().equals("games")) {
+                    if (((ChestInventory) inv).getOwner().equals("music")) {
                         event.setCancelled();
                         inventory = (ChestInventory) inv;
                     }
@@ -50,10 +48,9 @@ public class GamesMenu implements Listener {
             if (action.getSourceItem().hasCustomBlockData()) {
                 assert inventory != null;
                 Player player = event.getTransaction().getSource();
-                if (data.contains("game")) {
-                    String name = data.getString("game");
+                if (data.contains("song")) {
+                    String name = data.getString("song");
                     inventory.close(player);
-                    ElissaMC.plugin.getInstance().getGameHandler().joinGame(player, name);
                 }
             }
         }

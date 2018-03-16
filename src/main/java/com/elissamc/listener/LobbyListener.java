@@ -24,9 +24,12 @@ import cn.nukkit.nbt.tag.DoubleTag;
 import cn.nukkit.nbt.tag.FloatTag;
 import cn.nukkit.nbt.tag.ListTag;
 import cn.nukkit.scheduler.NukkitRunnable;
+import cn.nukkit.utils.DyeColor;
+import cn.nukkit.utils.TextFormat;
 import com.elissamc.ElissaMC;
 import com.elissamc.api.MenuSystem.menu.CosmeticMenu;
 import com.elissamc.api.MenuSystem.menu.GamesMenu;
+import com.elissamc.api.MenuSystem.menu.MusicMenu;
 import com.elissamc.api.MenuSystem.menu.StoreMenu;
 import com.elissamc.api.ParticleSystem.WeirdEffect;
 import com.elissamc.task.ServerTutorial.ServerTutorial;
@@ -34,17 +37,22 @@ import net.holograms.FloatingPassage;
 import net.holograms.object.CraftParticle;
 
 import java.io.File;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.UUID;
 
 import static cn.nukkit.utils.TextFormat.*;
 
 public class LobbyListener implements Listener {
 
     private EntityHuman entity;
+    private final Set<UUID> vanished = new HashSet<>();
 
     public LobbyListener() {
         Server.getInstance().getPluginManager().registerEvents(new CosmeticMenu(), ElissaMC.plugin);
         Server.getInstance().getPluginManager().registerEvents(new StoreMenu(), ElissaMC.plugin);
         Server.getInstance().getPluginManager().registerEvents(new GamesMenu(), ElissaMC.plugin);
+        Server.getInstance().getPluginManager().registerEvents(new MusicMenu(), ElissaMC.plugin);
         Skin skin = new Skin(new File(ElissaMC.dataFolder, "satan.png"));
         Location loc = new Location(-150.5, 83, 329.5, Server.getInstance().getDefaultLevel());
         final CompoundTag nbt = new CompoundTag()
@@ -83,17 +91,35 @@ public class LobbyListener implements Listener {
         hologram.addLine(GOLD + "%count%" + WHITE + " Members Online");
     }
 
+    private Player getPlayer(UUID uuid) {
+        for (Player player : Server.getInstance().getOnlinePlayers().values()) {
+            if (player.getUniqueId() == uuid) {
+                return player;
+            }
+        }
+        return null;
+    }
+
     @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGH)
     public void onPlayerJoin(PlayerJoinEvent event) {
         event.setJoinMessage("");
         Server.getInstance().getScheduler().scheduleDelayedTask(ElissaMC.plugin, new NukkitRunnable() {
             @Override
             public void run() {
+                event.getPlayer().teleport(Server.getInstance().getDefaultLevel().getSafeSpawn());
                 event.getPlayer().sendTitle("" + BOLD + WHITE + "ElissaMC", YELLOW + "Winner Winner Chicken Dinner", 20, 40, 20);
                 event.getPlayer().sendActionBar(GOLD + "BETA STAGE v1.0");
             }
         }, 40);
         this.initPlayer(event.getPlayer());
+        if(this.vanished.size() > 0){
+            for (UUID uuid : this.vanished) {
+                Player vanishedPlayer = getPlayer(uuid);
+                if (vanishedPlayer != null) {
+                    vanishedPlayer.hidePlayer(event.getPlayer());
+                }
+            }
+        }
     }
 
     @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGH)
@@ -145,6 +171,32 @@ public class LobbyListener implements Listener {
             StoreMenu.showMenu(event.getPlayer());
         if(s.equals("servers"))
             GamesMenu.showMenu(event.getPlayer());
+        if(s.equals("music"))
+            MusicMenu.showMenu(event.getPlayer());
+        if(s.equals("players"))
+            vanishPlayer(event.getPlayer());
+    }
+
+    private void vanishPlayer(Player player) {
+        if(!vanished.contains(player.getUniqueId())) {
+            vanished.add(player.getUniqueId());
+            Item item;
+            player.getInventory().setItem(7, item = Item.get(Item.DYE, DyeColor.GRAY.getDyeData()).setCustomName("" + BOLD + WHITE + "Toggle Players" + RESET + DARK_GRAY + " | " + RED + "Vanished" + GRAY + " (Right Click)").setCustomBlockData(new CompoundTag().putString("lobby", "players")));
+            player.sendPopup(TextFormat.ITALIC + item.getName());
+            for (Player p : player.level.getPlayers().values()) {
+                player.hidePlayer(p);
+            }
+        }
+        else
+        {
+            vanished.remove(player.getUniqueId());
+            Item item;
+            player.getInventory().setItem(7, item = Item.get(Item.DYE, DyeColor.LIME.getDyeData()).setCustomName("" + BOLD + WHITE + "Toggle Players" + RESET + DARK_GRAY + " | " + GREEN + "Visibile" + GRAY + " (Right Click)").setCustomBlockData(new CompoundTag().putString("lobby", "players")));
+            player.sendPopup(TextFormat.ITALIC + item.getName());
+            for (Player p : player.level.getPlayers().values()) {
+                player.showPlayer(p);
+            }
+        }
     }
 
     private void initPlayer(Player player) {
@@ -154,7 +206,7 @@ public class LobbyListener implements Listener {
         inv.setItem(0, Item.get(Item.CHEST).setCustomName("" + BOLD + WHITE + "Cosmetics" + RESET + GRAY + " (Right Click)").setCustomBlockData(new CompoundTag().putString("lobby", "cosmetics")));
         inv.setItem(1, Item.get(Item.BOOK).setCustomName("" + BOLD + WHITE + "Store" + RESET + GRAY + " (Right Click)").setCustomBlockData(new CompoundTag().putString("lobby", "store")));
         inv.setItem(4, Item.get(Item.COMPASS).setCustomName("" + BOLD + WHITE + "Servers" + RESET + GRAY + " (Right Click)").setCustomBlockData(new CompoundTag().putString("lobby", "servers")));
-        inv.setItem(7, Item.get(Item.DYE, 10).setCustomName("" + RED + "Players" + YELLOW + " » " + WHITE + "Visible" + GRAY + " (Right Click)").setCustomBlockData(new CompoundTag().putString("lobby", "players")));
+        inv.setItem(7, Item.get(Item.DYE, 10).setCustomName("" + BOLD + WHITE + "Toggle Players" + RESET + DARK_GRAY + " | " + GREEN + "Visible" + GRAY + " (Right Click)").setCustomBlockData(new CompoundTag().putString("lobby", "players")));
         inv.setItem(8, Item.get(Item.BOOKSHELF).setCustomName("" + BOLD + WHITE + "Music" + RESET + GRAY + " (Right Click)").setCustomBlockData(new CompoundTag().putString("lobby", "music")));
     }
 

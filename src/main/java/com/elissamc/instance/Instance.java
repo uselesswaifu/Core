@@ -5,6 +5,7 @@ import cn.nukkit.event.Listener;
 import cn.nukkit.level.Level;
 import cn.nukkit.permission.Permission;
 import com.elissamc.ElissaMC;
+import com.elissamc.api.ChatSystem.ChatListener;
 import com.elissamc.api.ParkourSystem.ParkourSystem;
 import com.elissamc.games.GameHandler;
 import com.elissamc.instance.CMD.NickCmd;
@@ -51,6 +52,7 @@ public class Instance implements Listener {
         mommy.getServer().getPluginManager().registerEvents(new PartyChatEventBC(), ElissaMC.plugin);
         mommy.getServer().getPluginManager().registerEvents(new LobbyListener(), ElissaMC.plugin);
         mommy.getServer().getPluginManager().registerEvents(new ParkourSystem(), ElissaMC.plugin);
+        mommy.getServer().getPluginManager().registerEvents(new ChatListener(), ElissaMC.plugin);
     }
 
     private void registerCommands() {
