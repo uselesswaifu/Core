@@ -29,7 +29,7 @@
         <dependency>
             <groupId>com.github.uselesswaifu</groupId>
             <artifactId>Holograms</artifactId>
-            <version>2b11159765</version>
+            <version>master</version>
         </dependency>
         <dependency>
             <groupId>com.github.BuycraftPlugin.BuycraftX</groupId>

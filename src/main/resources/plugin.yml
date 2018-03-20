@@ -2,4 +2,4 @@ name: ElissaMC
 main: com.elissamc.ElissaMC
 version: "1.0.0"
 api: [1.0.0]
-depend: ["FloatingPassage"]
+depend: ["Holograms"]

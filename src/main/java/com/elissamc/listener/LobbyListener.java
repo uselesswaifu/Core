@@ -33,8 +33,8 @@ import com.elissamc.api.MenuSystem.menu.MusicMenu;
 import com.elissamc.api.MenuSystem.menu.StoreMenu;
 import com.elissamc.api.ParticleSystem.WeirdEffect;
 import com.elissamc.task.ServerTutorial.ServerTutorial;
-import net.holograms.FloatingPassage;
-import net.holograms.object.CraftParticle;
+import net.holograms.Holograms;
+import net.holograms.object.CraftHologram;
 
 import java.io.File;
 import java.util.HashSet;
@@ -74,12 +74,12 @@ public class LobbyListener implements Listener {
                 .putByteArray("Data", skin.getData()).putString("ModelId", skin.getModel()));
         entity = (EntityHuman) Entity.createEntity("Human", loc.getLevel().getChunk(loc.getFloorX() >> 4, loc.getFloorZ() >> 4), nbt);
 
-        CraftParticle satan = FloatingPassage.getHologramManager().createHologram("satan", loc.add(0, 0.5), true);
+        CraftHologram satan = Holograms.getHologramManager().createHologram("satan", loc.add(0, 0.5), true);
         satan.addLine(RED + "The Souls Collector");
         satan.addLine(WHITE + "Tutorial");
         new WeirdEffect(loc).runTaskTimer(ElissaMC.plugin, 0, 2);
 
-        CraftParticle hologram = FloatingPassage.getHologramManager().createHologram("joinLobby", new Location(-145.5, 88.5, 311.5, Server.getInstance().getDefaultLevel()), true);
+        CraftHologram hologram = Holograms.getHologramManager().createHologram("joinLobby", new Location(-145.5, 88.5, 311.5, Server.getInstance().getDefaultLevel()), true);
         hologram.addLine(WHITE + "Welcome to" + GOLD + " ElissaMC Network");
         hologram.addLine("" + GOLD + "%name%");
         hologram.addLine(" ");

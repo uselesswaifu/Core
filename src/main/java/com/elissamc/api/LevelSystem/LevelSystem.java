@@ -3,8 +3,8 @@ package com.elissamc.api.LevelSystem;
 import cn.nukkit.Player;
 import cn.nukkit.utils.DummyBossBar;
 import cn.nukkit.utils.TextFormat;
-import com.elissamc.api.BossbarSystem.BossbarTask;
 import com.elissamc.ElissaMC;
+import com.elissamc.api.BossbarSystem.BossbarTask;
 
 import java.util.ArrayList;
 
@@ -51,23 +51,22 @@ public class LevelSystem {
         addExperience(player, 312);
     }
 
-    public static void addExperience(Player player, int xp) {
+    private static void addExperience(Player player, int xp) {
         DummyBossBar bar;
         player.createBossBar(bar = new DummyBossBar.Builder(player).text(DARK_GRAY + "+" + GREEN + Integer.toString(xp) + GRAY + " Experience").build());
         ElissaMC.plugin.getServer().getScheduler().scheduleRepeatingTask(ElissaMC.plugin, new BossbarTask(ElissaMC.plugin, bar), 1);
     }
 
     public static String[] ExperienceBar(Player player) {
-        String placeholder = TextFormat.BOLD + "";
-        String space = "";
+        StringBuilder placeholder = new StringBuilder(TextFormat.BOLD + "");
+        StringBuilder space = new StringBuilder();
         for (int i = 0; i < 20; i++) {
-            placeholder += AQUA + "_";
-            space += "  ";
+            placeholder.append(AQUA + "_");
+            space.append("  ");
         }
         String lvl = AQUA + "Lvl. 3" + space.substring(0, space.length() / 2) + "Lvl. 4";
         String bar = DARK_GRAY + "[" + placeholder + DARK_GRAY + "]";
-        String[] trash = {lvl, bar};
-        return trash;
+        return new String[]{lvl, bar};
     }
 
     public static ArrayList<String> center(ArrayList<String> string, int length) {
