@@ -9,7 +9,6 @@ import com.elissamc.api.ChatSystem.ChatListener;
 import com.elissamc.api.ParkourSystem.ParkourSystem;
 import com.elissamc.games.GameHandler;
 import com.elissamc.instance.CMD.NickCmd;
-import com.elissamc.instance.CMD.PartyCmd;
 import com.elissamc.instance.CMD.PluginsCmd;
 import com.elissamc.instance.CMD.ReportCmd;
 import com.elissamc.listener.LobbyListener;
@@ -18,7 +17,6 @@ import com.elissamc.player.event.PartyChatEventBC;
 public class Instance implements Listener {
 
     private static String maps[] = {"world"};
-    public PartyCmd party;
     private ElissaMC mommy;
     private GameHandler gameHandler;
 
@@ -58,7 +56,6 @@ public class Instance implements Listener {
     private void registerCommands() {
         mommy.getServer().getCommandMap().register("report", new ReportCmd(this));
         mommy.getServer().getCommandMap().register("nick", new NickCmd(this));
-        mommy.getServer().getCommandMap().register("party", party = new PartyCmd());
     }
 
     public GameHandler getGameHandler() {
