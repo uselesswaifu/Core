@@ -20,12 +20,18 @@ class Instance(private val mommy: ElissaMC) : Listener {
 
     init {
         for (map in maps) {
-            Server.getInstance().loadLevel(map)
-            val level = Server.getInstance().getLevelByName(map)
-            level.rainTime = 9999
-            level.isRaining = false
-            level.isThundering = false
-            level.stopTime()
+            try {
+                Server.getInstance().loadLevel(map)
+                val level = Server.getInstance().getLevelByName(map)
+                level.rainTime = 9999
+                level.isRaining = false
+                level.isThundering = false
+                level.stopTime()
+            }
+
+            catch (error: IllegalStateException){
+                Server.getInstance().logger.error("Level titled $map could not be found!")
+            }
         }
     }
 

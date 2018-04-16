@@ -1,28 +1,22 @@
 package com.elissamc.api.MenuSystem.menu
 
 import cn.nukkit.Player
-import cn.nukkit.Server
 import cn.nukkit.event.EventHandler
 import cn.nukkit.event.Listener
 import cn.nukkit.event.inventory.InventoryTransactionEvent
-import cn.nukkit.inventory.Inventory
 import cn.nukkit.inventory.InventoryType
-import cn.nukkit.inventory.transaction.action.InventoryAction
 import cn.nukkit.item.Item
 import cn.nukkit.nbt.tag.CompoundTag
 import cn.nukkit.utils.TextFormat
-import com.elissamc.api.MenuSystem.ChestInventory
-
-import java.io.IOException
-
 import cn.nukkit.utils.TextFormat.*
+import com.elissamc.api.MenuSystem.ChestInventory
 
 class CosmeticMenu : Listener {
 
     @EventHandler
     fun grabzItemInChest(event: InventoryTransactionEvent) {
         for (action in event.transaction.actions) {
-            var inventory: ChestInventory? = null
+            lateinit var inventory: ChestInventory
             val data = action.sourceItem.customBlockData
             for (inv in event.transaction.inventories) {
                 if (inv is ChestInventory) {
@@ -34,32 +28,39 @@ class CosmeticMenu : Listener {
             }
 
             if (action.sourceItem.hasCustomBlockData()) {
+                val player: Player = event.transaction.source
                 if (data.contains("menu")) {
-                    assert(inventory != null)
                     if (data.getString("menu") == "main")
-                        mainMenu(inventory!!)
+                        mainMenu(inventory)
                     if (data.getString("menu") == "pets")
-                        petsMenu(inventory!!)
+                        petsMenu(inventory, player)
                     if (data.getString("menu") == "mounts")
-                        mountsMenu(inventory!!)
+                        mountsMenu(inventory, player)
                     if (data.getString("menu") == "trails")
-                        trailsMenu(inventory!!)
+                        trailsMenu(inventory, player)
                     if (data.getString("menu") == "suits")
-                        suitsMenu(inventory!!)
+                        suitsMenu(inventory, player)
                     if (data.getString("menu") == "crate")
-                        crateMenu(inventory!!)
+                        crateMenu(inventory)
+                    inventory.close(player)
                 }
 
                 if (data.contains("pet")) {
-                    assert(inventory != null)
                     if (data.getString("pet") == "clear") {
                         event.transaction.source.sendMessage(RED.toString() + "Cleared pet selection!")
-                        inventory!!.close(event.transaction.source)
+                        inventory.close(player)
                     }
                 }
 
                 if (data.contains("ignore") && data.getBoolean("ignore"))
                     event.setCancelled()
+                if(data.contains("purchase")) {
+                    if (data.getBoolean("purchase"))
+                        player.sendMessage("Officially bought a crate (doesn't exist yet!)")
+                    else
+                        player.sendMessage(RED.toString() + "Canceled Purchase for Treasure Key.")
+                    inventory.close(player)
+                }
             }
         }
     }
@@ -70,39 +71,59 @@ class CosmeticMenu : Listener {
         val purchase = intArrayOf(28, 29, 30, 37, 38, 39, 46, 47, 48)
         val cancel = intArrayOf(34, 35, 36, 43, 44, 45, 52, 53, 54)
         for (i in purchase) {
-            inventory.setItem(i - 1, Item.get(Item.EMERALD_BLOCK).setCustomName("" + BOLD + GREEN + "PURCHASE").setCustomBlockData(CompoundTag().putBoolean("purcahse", true)))
+            inventory.setItem(i - 1, Item.get(Item.EMERALD_BLOCK).setCustomName("" + BOLD + GREEN + "PURCHASE").setCustomBlockData(CompoundTag().putBoolean("purchase", true)))
         }
         for (i in cancel) {
-            inventory.setItem(i - 1, Item.get(Item.REDSTONE_BLOCK).setCustomName("" + BOLD + RED + "CANCEL").setCustomBlockData(CompoundTag().putBoolean("purcahse", false)))
+            inventory.setItem(i - 1, Item.get(Item.REDSTONE_BLOCK).setCustomName("" + BOLD + RED + "CANCEL").setCustomBlockData(CompoundTag().putBoolean("purchase", false)))
         }
     }
 
-    private fun petsMenu(inventory: ChestInventory) {
+    private fun petsMenu(inventory: ChestInventory, player: Player) {
         inventory.clearAll()
-        inventory.setItem(10, Item.get(Item.RAW_PORKCHOP).setCustomName(AQUA.toString() + "Spawn" + DARK_PURPLE + " Piggy" + RESET + "\n\nOink! Oink!\n\nPermission: NO!").setCustomBlockData(CompoundTag().putString("pet", "pig")))
+        inventory.setItem(10, Item.get(Item.RAW_PORKCHOP).setCustomName(itemName(AQUA.toString() + "Spawn" + DARK_PURPLE + " Piggy", "Oink! Oink!", "pig", player)).setCustomBlockData(CompoundTag().putString("pet", "pig")))
         inventory.setItem(39, Item.get(Item.ARROW).setCustomName(RED.toString() + "Main Menu").setCustomBlockData(CompoundTag().putString("menu", "main")))
         inventory.setItem(41, Item.get(Item.REDSTONE_BLOCK).setCustomName(RED.toString() + "Clear current pet").setCustomBlockData(CompoundTag().putString("pet", "clear")))
     }
 
-    private fun mountsMenu(inventory: ChestInventory) {
+    private fun mountsMenu(inventory: ChestInventory, player: Player) {
         inventory.clearAll()
-        inventory.setItem(10, Item.get(Item.DRAGON_EGG).setCustomName(AQUA.toString() + "Mount" + DARK_PURPLE + " EnderDragon" + RESET + "\n\nRawr!\n\nPermission: NO!").setCustomBlockData(CompoundTag().putString("mount", "dragon")))
+        inventory.setItem(10, Item.get(Item.DRAGON_EGG).setCustomName(itemName(AQUA.toString() + "Mount" + DARK_PURPLE + " EnderDragon", "Rawr!", "enderdragon", player)).setCustomBlockData(CompoundTag().putString("mount", "dragon")))
         inventory.setItem(39, Item.get(Item.ARROW).setCustomName(RED.toString() + "Main Menu").setCustomBlockData(CompoundTag().putString("menu", "main")))
         inventory.setItem(41, Item.get(Item.REDSTONE_BLOCK).setCustomName(RED.toString() + "Clear current mount").setCustomBlockData(CompoundTag().putString("mount", "clear")))
     }
 
-    private fun trailsMenu(inventory: ChestInventory) {
+    private fun trailsMenu(inventory: ChestInventory, player: Player) {
         inventory.clearAll()
-        inventory.setItem(10, Item.get(Item.BLAZE_ROD).setCustomName(AQUA.toString() + "Trail" + DARK_PURPLE + " Redstone" + RESET + "\n\nBright! Bright!\n\nPermission: NO!").setCustomBlockData(CompoundTag().putString("mount", "dragon")))
+        inventory.setItem(10, Item.get(Item.BLAZE_ROD).setCustomName(itemName(AQUA.toString() + "Trail" + DARK_PURPLE + " Redstone", "Bright! Bright!", "redstone", player)).setCustomBlockData(CompoundTag().putString("mount", "dragon")))
         inventory.setItem(39, Item.get(Item.ARROW).setCustomName(RED.toString() + "Main Menu").setCustomBlockData(CompoundTag().putString("menu", "main")))
         inventory.setItem(41, Item.get(Item.REDSTONE_BLOCK).setCustomName(RED.toString() + "Clear current mount").setCustomBlockData(CompoundTag().putString("trail", "clear")))
     }
 
-    private fun suitsMenu(inventory: ChestInventory) {
+    private fun suitsMenu(inventory: ChestInventory, player: Player) {
         inventory.clearAll()
-        inventory.setItem(10, Item.get(Item.DRAGON_EGG).setCustomName(AQUA.toString() + "Suit" + DARK_PURPLE + " SpaceMan" + RESET + "\n\nDon't forget to blink!\n\nPermission: NO!").setCustomBlockData(CompoundTag().putString("mount", "dragon")))
+        inventory.setItem(10, Item.get(Item.DRAGON_EGG).setCustomName(itemName(AQUA.toString() + "Suit" + DARK_PURPLE + " SpaceMan", "Don't forget to blink!", "spaceman", player)).setCustomBlockData(CompoundTag().putString("mount", "dragon")))
         inventory.setItem(39, Item.get(Item.ARROW).setCustomName(RED.toString() + "Main Menu").setCustomBlockData(CompoundTag().putString("menu", "main")))
         inventory.setItem(41, Item.get(Item.REDSTONE_BLOCK).setCustomName(RED.toString() + "Clear current mount").setCustomBlockData(CompoundTag().putString("suit", "clear")))
+    }
+
+    private fun wingsMenu(inventory: ChestInventory, player: Player) {
+        inventory.clearAll()
+        inventory.setItem(10, Item.get(Item.DRAGON_EGG).setCustomName(itemName(AQUA.toString() + "Wing" + DARK_PURPLE + " SpaceMan", "Don't forget to blink!", "spaceman", player)).setCustomBlockData(CompoundTag().putString("mount", "dragon")))
+        inventory.setItem(39, Item.get(Item.ARROW).setCustomName(RED.toString() + "Main Menu").setCustomBlockData(CompoundTag().putString("menu", "main")))
+        inventory.setItem(41, Item.get(Item.REDSTONE_BLOCK).setCustomName(RED.toString() + "Clear current mount").setCustomBlockData(CompoundTag().putString("suit", "clear")))
+    }
+
+    private fun itemName(name: String, subname: String, perm: String, player: Player): String {
+        val builder = StringBuilder()
+        builder.append(name + RESET + "\n\n")
+        builder.append(subname + RESET + "\n\n")
+        val p: String
+        if (player.hasPermission("elissamc.cosmetic." + perm))
+            p = GREEN.toString() + "YES"
+        else
+            p = RED.toString() + "NO"
+        builder.append(YELLOW.toString() + "Permission: " + p)
+        return builder.toString()
     }
 
     companion object {
