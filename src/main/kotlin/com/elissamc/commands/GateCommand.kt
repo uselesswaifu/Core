@@ -87,11 +87,11 @@ class GateCommand(name: String) : Command(name) {
     }
 
     private fun checkSelection(sender: Player): Boolean {
-        if (FawePlayer.wrap<Any>(sender).selection != null)
-            return true
+        return if (FawePlayer.wrap<Any>(sender).selection != null)
+            true
         else {
             sender.sendMessage(ChatManager.error("Make a WorldEdit selection first!"))
-            return true
+            true
         }
     }
 }

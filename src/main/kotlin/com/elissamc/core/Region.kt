@@ -219,7 +219,6 @@ class Region {
      * @param selection worldedit selection
      */
     constructor(selection: Region) {
-        //        selection = selection.getSelection()
         this.v1 = Vector3(selection.minX, selection.minY, selection.minZ)
         this.v2 = Vector3(selection.maxX, selection.maxY, selection.maxZ)
         this.world = selection.world
