@@ -10,9 +10,8 @@ import cn.nukkit.form.element.ElementInput
 import cn.nukkit.form.element.ElementLabel
 import cn.nukkit.form.element.ElementToggle
 import cn.nukkit.form.window.FormWindowCustom
-import com.elissamc.ElissaCore
 
-class NickCmd(internal var instance: ElissaCore) : Command("nick") {
+class NickCmd : Command("nick") {
 
     init {
         aliases = arrayOf("n")

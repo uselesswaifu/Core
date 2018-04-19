@@ -11,22 +11,18 @@ object RandomUtils {
 
     val randomVector: Vector3
         get() {
-            val x: Double
-            val y: Double
-            val z: Double
-            x = random.nextDouble() * 2 - 1
-            y = random.nextDouble() * 2 - 1
-            z = random.nextDouble() * 2 - 1
+            val x: Double = random.nextDouble() * 2 - 1
+            val y: Double = random.nextDouble() * 2 - 1
+            val z: Double = random.nextDouble() * 2 - 1
 
             return Vector3(x, y, z).normalize()
         }
 
     val randomCircleVector: Vector3
         get() {
-            val rnd: Double
+            val rnd: Double = random.nextDouble() * 2.0 * Math.PI
             val x: Double
             val z: Double
-            rnd = random.nextDouble() * 2.0 * Math.PI
             x = Math.cos(rnd)
             z = Math.sin(rnd)
 

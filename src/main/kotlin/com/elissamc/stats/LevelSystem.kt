@@ -69,7 +69,7 @@ object LevelSystem {
         return arrayOf(lvl, bar)
     }
 
-    fun center(string: ArrayList<String>, l: Int): ArrayList<String> {
+    private fun center(string: ArrayList<String>, l: Int): ArrayList<String> {
         var length: Int = l
         val left = ArrayList<String>()
         for (s in string) {

@@ -2,21 +2,18 @@ package com.elissamc.task.ServerTutorial
 
 import cn.nukkit.Player
 import cn.nukkit.Server
-import cn.nukkit.level.Level
 import cn.nukkit.level.Location
 import cn.nukkit.scheduler.NukkitRunnable
-
 import cn.nukkit.utils.TextFormat.*
 
 class ServerTutorial(private val player: Player) : NukkitRunnable() {
 
     private var stage = 0
     private val l = Server.getInstance().defaultLevel
-    private val previousLoc: Location
+    private val previousLoc: Location = player.location
     private val locs = arrayOf(Location(-160.3890975496729, 100.0, 302.65173069276443, 307.15384, 26.55564, l), Location(-228.46697606052106, 88.0, 288.4036739560498, 310.9807, 33.4011, l), Location(-273.4095471915437, 84.0, 288.4437772466859, 57.75351, 12.304578, l), Location(-154.69999998807907, 106.0, 346.3194764605599, 208.09845, 26.041174, l), Location(-144.3900863763124, 93.0, 294.30000001192093, 341.02112, 16.031563, l), Location(-180.69999998807907, 103.0, 320.69999998807907, 245.1742, 9.333818, l))
 
     init {
-        this.previousLoc = player.location
         player.setImmobile()
     }
 

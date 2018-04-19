@@ -6,9 +6,7 @@ import cn.nukkit.event.Listener
 import cn.nukkit.plugin.Plugin
 import cn.nukkit.scheduler.PluginTask
 import com.elissamc.ElissaMC
-
 import java.lang.reflect.InvocationTargetException
-import java.lang.reflect.Method
 
 abstract class Minigame(private val game: Any, plugin: Any) {
 
@@ -55,8 +53,4 @@ abstract class Minigame(private val game: Any, plugin: Any) {
     }
 
     abstract val displayname: String
-
-    fun getDisplayName(): String {
-        return displayname
-    }
 }

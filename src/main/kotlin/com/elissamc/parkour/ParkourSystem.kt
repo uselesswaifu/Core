@@ -10,18 +10,14 @@ import cn.nukkit.event.EventHandler
 import cn.nukkit.event.EventPriority
 import cn.nukkit.event.Listener
 import cn.nukkit.event.player.PlayerInteractEvent
-import cn.nukkit.level.Level
 import cn.nukkit.level.Location
 import cn.nukkit.utils.Config
 import cn.nukkit.utils.TextFormat
-import com.elissamc.ElissaMC
-
-import java.io.File
-import java.util.HashMap
-import java.util.UUID
-import java.util.concurrent.TimeUnit
-
 import cn.nukkit.utils.TextFormat.*
+import com.elissamc.ElissaMC
+import java.io.File
+import java.util.*
+import java.util.concurrent.TimeUnit
 
 class ParkourSystem : VanillaCommand("parkour"), Listener {
 
@@ -47,7 +43,7 @@ class ParkourSystem : VanillaCommand("parkour"), Listener {
     override fun execute(commandSender: CommandSender, s: String, args: Array<String>): Boolean {
         if (commandSender !is Player)
             return false
-        if (args.size > 0) {
+        if (args.isNotEmpty()) {
             if (args[0] == "start") {
                 commandSender.sendActionBar("Parkour Challenge Started")
                 commandSender.teleport(start)

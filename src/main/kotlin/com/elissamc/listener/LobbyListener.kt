@@ -190,7 +190,6 @@ class LobbyListener : Listener {
     }
 
     private fun initPlayer(player: Player) {
-        player.setGamemode(Player.ADVENTURE)
         val inv = player.inventory
         inv.clearAll()
         inv.setItem(0, Item.get(Item.CHEST).setCustomName("" + BOLD + WHITE + "Cosmetics" + RESET + GRAY + " (Right Click)").setCustomBlockData(CompoundTag().putString("lobby", "cosmetics")))
