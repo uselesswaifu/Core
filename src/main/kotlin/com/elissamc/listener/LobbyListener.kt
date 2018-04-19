@@ -24,11 +24,7 @@ import cn.nukkit.utils.DyeColor
 import cn.nukkit.utils.TextFormat
 import cn.nukkit.utils.TextFormat.*
 import com.elissamc.ElissaMC
-import com.elissamc.api.MenuSystem.menu.CosmeticMenu
-import com.elissamc.api.MenuSystem.menu.GamesMenu
-import com.elissamc.api.MenuSystem.menu.MusicMenu
-import com.elissamc.api.MenuSystem.menu.StoreMenu
-import com.elissamc.api.ParticleSystem.WeirdEffect
+import com.elissamc.particle.WeirdEffect
 import com.elissamc.task.ServerTutorial.ServerTutorial
 import net.holograms.Holograms
 import java.io.File
@@ -42,10 +38,6 @@ class LobbyListener : Listener {
     private val vanished = HashSet<UUID>()
 
     init {
-        Server.getInstance().pluginManager.registerEvents(CosmeticMenu(), ElissaMC.plugin)
-        Server.getInstance().pluginManager.registerEvents(StoreMenu(), ElissaMC.plugin)
-        Server.getInstance().pluginManager.registerEvents(GamesMenu(), ElissaMC.plugin)
-        Server.getInstance().pluginManager.registerEvents(MusicMenu(), ElissaMC.plugin)
         val skin = Skin(File(ElissaMC.folder, "satan.png"))
         val loc = Location(-150.5, 83.0, 329.5, Server.getInstance().defaultLevel)
         val nbt = CompoundTag()
@@ -162,17 +154,17 @@ class LobbyListener : Listener {
             return
         if (!event.item.hasCustomBlockData())
             return
-        if (event.item.customBlockData.getBoolean("leave")) ElissaMC.plugin.instance.gameHandler.removeGame(event.player)
+        if (event.item.customBlockData.getBoolean("leave")) ElissaMC.core.gameHandler.removeGame(event.player)
         val s = event.item.customBlockData.getString("lobby")
         event.setCancelled()
         if (s == "cosmetics")
-            CosmeticMenu.showMenu(event.player)
+
         if (s == "store")
-            StoreMenu.showMenu(event.player)
+
         if (s == "servers")
-            GamesMenu.showMenu(event.player)
+
         if (s == "music")
-            MusicMenu.showMenu(event.player)
+
         if (s == "players")
             vanishPlayer(event.player)
     }

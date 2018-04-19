@@ -4,9 +4,8 @@ import cn.nukkit.Player
 import cn.nukkit.level.Position
 import cn.nukkit.network.protocol.LevelEventPacket
 import cn.nukkit.scheduler.NukkitRunnable
-import com.elissamc.ElissaMC
 
-class ElderGuardianTask(instance: ElissaMC, private val player: Player, private val location: Position, private val title: String, private val subtitle: String) : NukkitRunnable() {
+class ElderGuardianTask(private val player: Player, private val location: Position, private val title: String, private val subtitle: String) : NukkitRunnable() {
 
     override fun run() {
         val pk = LevelEventPacket()

@@ -14,6 +14,5 @@ class PartyChatEventBC : Listener {
     @EventHandler
     fun onChat(event: PlayerChatEvent) {
         //        String msg = TextFormat.YELLOW + TextFormat.BOLD.toString() + "Party » " + TextFormat.RESET + player.getDisplayName() + TextFormat.GRAY + " :" + event.getMessage();
-        val player = event.player
     }
 }

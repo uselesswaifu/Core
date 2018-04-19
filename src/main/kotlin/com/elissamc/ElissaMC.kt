@@ -1,27 +1,35 @@
 package com.elissamc
 
+import cn.nukkit.Server
 import cn.nukkit.event.Listener
+import cn.nukkit.level.Level
 import cn.nukkit.plugin.PluginBase
 import cn.nukkit.utils.TextFormat
-import com.elissamc.instance.Instance
-
 import java.io.File
 
 class ElissaMC : PluginBase(), Listener {
-    lateinit var instance: Instance
 
     override fun onEnable() {
         logger.info(TextFormat.RED.toString() + "ElissaMC has been enabled!")
-        plugin = this
-        folder = this.dataFolder
-        instance = Instance(this)
-        server.pluginManager.registerEvents(instance, this)
-        instance.load()
+        this.init()
+    }
+
+    fun init() {
+        ElissaMC.plugin = this
+        ElissaMC.folder = this.dataFolder
+        ElissaMC.core = ElissaCore(this)
+        server.pluginManager.registerEvents(core, this)
     }
 
     companion object {
-        lateinit var folder: File
+        @JvmStatic
+        fun getWorld(world: String): Level? {
+            return Server.getInstance().getLevelByName(world)
+        }
+
         lateinit var plugin: ElissaMC
+        lateinit var folder: File
+        lateinit var core: ElissaCore
     }
 
 }

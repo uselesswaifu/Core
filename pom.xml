@@ -83,6 +83,11 @@
             <version>master</version>
         </dependency>
         <dependency>
+            <groupId>com.boydti</groupId>
+            <artifactId>fawe-api</artifactId>
+            <version>latest</version>
+        </dependency>
+        <dependency>
             <groupId>me.lucko.luckperms</groupId>
             <artifactId>luckperms-api</artifactId>
             <version>4.1</version>
