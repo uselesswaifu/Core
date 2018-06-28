@@ -24,8 +24,8 @@ import cn.nukkit.utils.DyeColor
 import cn.nukkit.utils.TextFormat
 import cn.nukkit.utils.TextFormat.*
 import com.elissamc.ElissaMC
-import com.elissamc.particle.WeirdEffect
-import com.elissamc.task.ServerTutorial.ServerTutorial
+import com.elissamc.menu.GamesMenu
+import com.elissamc.runnabletasks.ServerTutorial
 import net.holograms.Holograms
 import java.io.File
 import java.net.MalformedURLException
@@ -38,6 +38,8 @@ class LobbyListener : Listener {
     private val vanished = HashSet<UUID>()
 
     init {
+        Server.getInstance().pluginManager.registerEvents(GamesMenu(), ElissaMC.plugin)
+
         val skin = Skin(File(ElissaMC.folder, "satan.png"))
         val loc = Location(-150.5, 83.0, 329.5, Server.getInstance().defaultLevel)
         val nbt = CompoundTag()
@@ -62,7 +64,6 @@ class LobbyListener : Listener {
         val satan = Holograms.getHologramManager().createHologram("satan", loc.add(0.0, 0.5), true)
         satan.addLine(RED.toString() + "The Souls Collector")
         satan.addLine(WHITE.toString() + "Tutorial")
-        WeirdEffect(loc).runTaskTimer(ElissaMC.plugin, 0, 2)
 
         val hologram = Holograms.getHologramManager().createHologram("joinLobby", Location(-145.5, 88.5, 311.5, Server.getInstance().defaultLevel), true)
         hologram.addLine(WHITE.toString() + "Welcome to" + GOLD + " ElissaMC Network")
@@ -125,30 +126,6 @@ class LobbyListener : Listener {
     }
 
     @EventHandler
-    fun onPlayerHunger(event: PlayerFoodLevelChangeEvent) {
-        event.foodLevel = 20
-    }
-
-    @EventHandler
-    fun onPlayerDamage(event: EntityDamageEvent) {
-        if (event.entity !is Player)
-            return
-        event.setCancelled()
-    }
-
-    @EventHandler
-    fun onBlockPlace(event: BlockPlaceEvent) {
-        if (!event.player.hasPermission("elissamc.build"))
-            event.setCancelled()
-    }
-
-    @EventHandler
-    fun onBlockBreak(event: BlockBreakEvent) {
-        if (!event.player.hasPermission("elissamc.break"))
-            event.setCancelled()
-    }
-
-    @EventHandler
     fun onRightClickItem(event: PlayerInteractEvent) {
         if (event.action == PlayerInteractEvent.Action.PHYSICAL)
             return
@@ -157,12 +134,13 @@ class LobbyListener : Listener {
         if (event.item.customBlockData.getBoolean("leave")) ElissaMC.core.gameHandler.removeGame(event.player)
         val s = event.item.customBlockData.getString("lobby")
         event.setCancelled()
+        var player: Player = event.player
         if (s == "cosmetics")
 
         if (s == "store")
 
         if (s == "servers")
-
+            GamesMenu.showMenu(player)
         if (s == "music")
 
         if (s == "players")

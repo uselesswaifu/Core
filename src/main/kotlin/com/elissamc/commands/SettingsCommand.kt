@@ -4,7 +4,7 @@ import cn.nukkit.Player
 import cn.nukkit.command.Command
 import cn.nukkit.command.CommandSender
 import cn.nukkit.utils.TextFormat
-import com.elissamc.chat.ChatManager
+import com.elissamc.chat.ChatFormat
 import com.elissamc.core.Settings
 import com.elissamc.core.StorageEngine
 
@@ -21,11 +21,11 @@ class SettingsCommand(name: String) : Command(name) {
                             setting, value)
 
                 } catch (ex: Exception) {
-                    sender.sendMessage(ChatManager.error(ex.toString()))
+                    sender.sendMessage(ChatFormat.error(ex.toString()))
                 }
 
             } else {
-                sender.sendMessage(ChatManager.error("/settings <setting> <false/true>"))
+                sender.sendMessage(ChatFormat.error("/settings <setting> <false/true>"))
                 var avaiable = (TextFormat.GOLD.toString() + "Avaiable settings: "
                         + TextFormat.YELLOW)
                 for (s in Settings.values()) {

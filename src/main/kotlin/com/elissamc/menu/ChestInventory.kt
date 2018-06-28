@@ -6,11 +6,16 @@ import cn.nukkit.item.Item
 import cn.nukkit.utils.TextFormat
 import java.util.*
 
-class ChestInventory(holder: InventoryHolder, type: InventoryType, name: String) : FakeBaseInventory(holder, type) {
+class ChestInventory(holder: InventoryHolder, type: InventoryType, owner: String, name: String) : FakeBaseInventory(holder, type) {
     private var named: String = TextFormat.colorize(name)
+    private var owner: String = owner
 
-    override fun getName(): String? {
+    override fun getTitle(): String? {
         return named
+    }
+
+    fun getOwner(): String{
+        return owner
     }
 
     fun setName(s: String) {

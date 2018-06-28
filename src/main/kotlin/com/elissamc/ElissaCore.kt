@@ -4,7 +4,6 @@ import cn.nukkit.Server
 import cn.nukkit.event.Listener
 import cn.nukkit.level.Location
 import cn.nukkit.permission.Permission
-import com.elissamc.chat.ChatListener
 import com.elissamc.commands.*
 import com.elissamc.core.StorageEngine
 import com.elissamc.games.GameHandler
@@ -17,7 +16,7 @@ import java.util.*
 
 class ElissaCore(private val mommy: ElissaMC) : Listener {
     lateinit var gameHandler: GameHandler
-    private lateinit var eventProcessor: EventProcessor
+//    private lateinit var eventProcessor: EventProcessor
     var random: Random = Random()
 
     init {
@@ -33,7 +32,7 @@ class ElissaCore(private val mommy: ElissaMC) : Listener {
             Server.getInstance().logger.error("Level called: $map could not be found!")
         }
         this.load()
-        HardCoded.main()
+//        HardCoded.main()
     }
 
     private fun load() {
@@ -44,7 +43,7 @@ class ElissaCore(private val mommy: ElissaMC) : Listener {
         StorageEngine.initialize()
         StorageEngine.loadData()
         gameHandler = GameHandler()
-        eventProcessor = EventProcessor()
+//        eventProcessor = EventProcessor()
     }
 
     private fun registerPerms() {
@@ -57,7 +56,7 @@ class ElissaCore(private val mommy: ElissaMC) : Listener {
         mommy.server.pluginManager.registerEvents(PluginsCmd(), ElissaMC.plugin)
         mommy.server.pluginManager.registerEvents(LobbyListener(), ElissaMC.plugin)
         mommy.server.pluginManager.registerEvents(ParkourSystem(), ElissaMC.plugin)
-        mommy.server.pluginManager.registerEvents(ChatListener(), ElissaMC.plugin)
+//        mommy.server.pluginManager.registerEvents(ChatListener(), ElissaMC.plugin)
     }
 
     private fun registerCommands() {
@@ -65,7 +64,6 @@ class ElissaCore(private val mommy: ElissaMC) : Listener {
         mommy.server.commandMap.register("nick", NickCmd())
 
         mommy.server.commandMap.register("friend", FriendCommand("friend"))
-        mommy.server.commandMap.register("gate", GateCommand("gate"))
         mommy.server.commandMap.register("party", PartyCommand("party"))
         mommy.server.commandMap.register("settings", SettingsCommand("settings"))
         mommy.server.commandMap.register("unfriend", UnfriendCommand("unfriend"))

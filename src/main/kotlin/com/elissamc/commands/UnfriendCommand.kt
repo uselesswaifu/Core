@@ -4,7 +4,7 @@ import cn.nukkit.Player
 import cn.nukkit.Server
 import cn.nukkit.command.Command
 import cn.nukkit.command.CommandSender
-import com.elissamc.chat.ChatManager
+import com.elissamc.chat.ChatFormat
 import com.elissamc.core.StorageEngine
 
 class UnfriendCommand(name: String) : Command(name) {
@@ -33,20 +33,20 @@ class UnfriendCommand(name: String) : Command(name) {
                                     p.uniqueId)) {
                         StorageEngine.getProfile(sender.uniqueId).removeFriend(
                                 p.uniqueId)
-                        sender.sendMessage(ChatManager.success("Player '" + p.name
+                        sender.sendMessage(ChatFormat.success("Player '" + p.name
                                 + "' has been REMOVED from your friends!"))
                         success = true
                     } else {
-                        sender.sendMessage(ChatManager.error("Player '" + p.name
+                        sender.sendMessage(ChatFormat.error("Player '" + p.name
                                 + "' is not in your friends list!"))
 
                     }
                 }
             }
             if (!success)
-                sender.sendMessage(ChatManager.error("Player not found! Player must be online!"))
+                sender.sendMessage(ChatFormat.error("Player not found! Player must be online!"))
         } else {
-            sender.sendMessage(ChatManager.error("You must provide player name!"))
+            sender.sendMessage(ChatFormat.error("You must provide player name!"))
         }
     }
 

@@ -1,7 +1,7 @@
 package com.elissamc.core
 
 import cn.nukkit.Player
-import com.elissamc.chat.ChatManager
+import com.elissamc.chat.ChatFormat
 
 import java.util.ArrayList
 
@@ -22,7 +22,7 @@ class Party
     init {
         this.players = ArrayList()
 
-        owner.sendMessage(ChatManager.success("Created new party!"))
+        owner.sendMessage(ChatFormat.success("Created new party!"))
     }
 
     /**
@@ -44,7 +44,7 @@ class Party
      */
     fun addPlayer(player: Player) {
         this.players.add(player)
-        player.sendMessage(ChatManager.success("You have joined " + this.owner.displayName + "'s party!"))
+        player.sendMessage(ChatFormat.success("You have joined " + this.owner.displayName + "'s party!"))
     }
 
     fun removePlayer(player: Player) {

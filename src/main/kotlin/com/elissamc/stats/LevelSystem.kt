@@ -3,8 +3,6 @@ package com.elissamc.stats
 import cn.nukkit.Player
 import cn.nukkit.utils.DummyBossBar
 import cn.nukkit.utils.TextFormat
-import com.elissamc.ElissaMC
-import com.elissamc.scoreboard.BossbarTask
 
 import java.util.ArrayList
 
@@ -54,7 +52,7 @@ object LevelSystem {
     private fun addExperience(player: Player, xp: Int) {
         val bar: DummyBossBar = DummyBossBar.Builder(player).text(DARK_GRAY.toString() + "+" + GREEN + Integer.toString(xp) + GRAY + " Experience").build()
         player.createBossBar(bar)
-        ElissaMC.plugin.server.scheduler.scheduleRepeatingTask(ElissaMC.plugin, BossbarTask(ElissaMC.plugin, bar), 1)
+//        ElissaMC.plugin.server.scheduler.scheduleRepeatingTask(ElissaMC.plugin, BossbarTask(ElissaMC.plugin, bar), 1)
     }
 
     fun ExperienceBar(): Array<String> {

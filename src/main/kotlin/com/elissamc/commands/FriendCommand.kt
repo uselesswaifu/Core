@@ -4,7 +4,7 @@ import cn.nukkit.Player
 import cn.nukkit.Server
 import cn.nukkit.command.Command
 import cn.nukkit.command.CommandSender
-import com.elissamc.chat.ChatManager
+import com.elissamc.chat.ChatFormat
 import com.elissamc.core.StorageEngine
 
 class FriendCommand(name: String) : Command(name) {
@@ -17,7 +17,7 @@ class FriendCommand(name: String) : Command(name) {
                 this.processCommand(sender, args)
             }
         } else {
-            sender.sendMessage(ChatManager.error("This command is only available for players!"))
+            sender.sendMessage(ChatFormat.error("This command is only available for players!"))
         }
         return true
     }
@@ -30,9 +30,9 @@ class FriendCommand(name: String) : Command(name) {
                 if (p.name.equals(playerName, ignoreCase = true)) {
                     StorageEngine.getProfile(sender.uniqueId).addFriend(
                             p.uniqueId)
-                    sender.sendMessage(ChatManager.success("Player '" + p.name
+                    sender.sendMessage(ChatFormat.success("Player '" + p.name
                             + "' has been ADDED to your friends!"))
-                    p.sendMessage(ChatManager.success("Player '" + sender.name
+                    p.sendMessage(ChatFormat.success("Player '" + sender.name
                             + "' added you to his/her friends! Add him too! /friend "
                             + sender.name))
 
@@ -40,9 +40,9 @@ class FriendCommand(name: String) : Command(name) {
                 }
             }
             if (!success)
-                sender.sendMessage(ChatManager.error("Player not found! Player must be online!"))
+                sender.sendMessage(ChatFormat.error("Player not found! Player must be online!"))
         } else {
-            sender.sendMessage(ChatManager.error("You must provide player name!"))
+            sender.sendMessage(ChatFormat.error("You must provide player name!"))
         }
     }
 

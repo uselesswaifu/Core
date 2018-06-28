@@ -4,7 +4,7 @@ import cn.nukkit.Player
 import cn.nukkit.Server
 import cn.nukkit.command.Command
 import cn.nukkit.command.CommandSender
-import com.elissamc.chat.ChatManager
+import com.elissamc.chat.ChatFormat
 import com.elissamc.core.Party
 import com.elissamc.core.StorageEngine
 
@@ -29,15 +29,15 @@ class PartyCommand(name: String) : Command(name) {
     fun main(sender: Player): Boolean {
         val party: Party? = StorageEngine.getProfile(sender.uniqueId).party
         if (party == null) {
-            sender.sendMessage(ChatManager.error("You are not in party!"))
+            sender.sendMessage(ChatFormat.error("You are not in party!"))
         } else {
             var players = ""
             for (player in party.players)
                 players += player.name + ", "
             players = players.substring(0, players.length - 2)
 
-            sender.sendMessage(ChatManager.success("You are in party with: $players"))
-            sender.sendMessage(ChatManager.success("Type /party leave to leave party."))
+            sender.sendMessage(ChatFormat.success("You are in party with: $players"))
+            sender.sendMessage(ChatFormat.success("Type /party leave to leave party."))
         }
         return true
     }
@@ -48,7 +48,7 @@ class PartyCommand(name: String) : Command(name) {
             StorageEngine.getProfile(sender.uniqueId).party = Party(sender)
             party.addPlayer(sender)
         } else {
-            sender.sendMessage(ChatManager.error("You have to leave your current party first! Type /party leave!"))
+            sender.sendMessage(ChatFormat.error("You have to leave your current party first! Type /party leave!"))
         }
         return true
     }
@@ -59,19 +59,19 @@ class PartyCommand(name: String) : Command(name) {
                 val player = this.findPlayer(playerName)
                 if (player != null) {
                     if (StorageEngine.getProfile(player.uniqueId).party == null) {
-                        sender.sendMessage(ChatManager.success("Adding player "
+                        sender.sendMessage(ChatFormat.success("Adding player "
                                 + player.displayName + " to party!"))
                         StorageEngine.getProfile(sender.uniqueId).party!!.addPlayer(
                                 player)
                         StorageEngine.getProfile(player.uniqueId).party = StorageEngine.getProfile(sender.uniqueId).party
                     } else {
-                        sender.sendMessage(ChatManager.error("Specified player is in another party!"))
+                        sender.sendMessage(ChatFormat.error("Specified player is in another party!"))
                     }
                 } else {
-                    sender.sendMessage(ChatManager.error("Player not found!"))
+                    sender.sendMessage(ChatFormat.error("Player not found!"))
                 }
             } else {
-                sender.sendMessage(ChatManager.error("Only party owner can invite players."))
+                sender.sendMessage(ChatFormat.error("Only party owner can invite players."))
             }
         } else {
             this.create(sender)
@@ -87,21 +87,21 @@ class PartyCommand(name: String) : Command(name) {
                 val player = this.findPlayer(playerName)
                 if (player != null) {
                     if (p.contains(player)) {
-                        player.sendMessage(ChatManager.success("You have been kicked from the party!"))
-                        sender.sendMessage(ChatManager.success("Player "
+                        player.sendMessage(ChatFormat.success("You have been kicked from the party!"))
+                        sender.sendMessage(ChatFormat.success("Player "
                                 + player.name + " has been kicked!"))
                         p.removePlayer(player)
                     } else {
-                        sender.sendMessage(ChatManager.error("Player not found in this party!"))
+                        sender.sendMessage(ChatFormat.error("Player not found in this party!"))
                     }
                 } else {
-                    sender.sendMessage(ChatManager.error("Player not found!"))
+                    sender.sendMessage(ChatFormat.error("Player not found!"))
                 }
             } else {
-                sender.sendMessage(ChatManager.error("You are not owner of this party!"))
+                sender.sendMessage(ChatFormat.error("You are not owner of this party!"))
             }
         } else {
-            sender.sendMessage(ChatManager.error("You are not in party!"))
+            sender.sendMessage(ChatFormat.error("You are not in party!"))
         }
         return true
     }
@@ -110,9 +110,9 @@ class PartyCommand(name: String) : Command(name) {
         if (StorageEngine.getProfile(sender.uniqueId).party != null) {
             val party = StorageEngine.getProfile(sender.uniqueId).party
             party!!.removePlayer(sender)
-            sender.sendMessage(ChatManager.success("You have left party!"))
+            sender.sendMessage(ChatFormat.success("You have left party!"))
         } else {
-            sender.sendMessage(ChatManager.error("You are not in party!"))
+            sender.sendMessage(ChatFormat.error("You are not in party!"))
         }
         return true
     }
