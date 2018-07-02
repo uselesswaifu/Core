@@ -84,6 +84,8 @@ class ParkourSystem : VanillaCommand("parkour"), Listener {
     }
 
     private fun endParkour(player: Player) { // TODO: GIVE SOULS ON BEATING SCORE
+        player.teleport(start)
+
         if (!parkour.containsKey(player.uniqueId)) {
             player.sendMessage(TextFormat.colorize("&a&lThis is the finish line for the parkour! Get to the start line and climb back up here!"))
             return

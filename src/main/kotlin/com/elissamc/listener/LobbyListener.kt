@@ -8,10 +8,11 @@ import cn.nukkit.entity.data.Skin
 import cn.nukkit.event.EventHandler
 import cn.nukkit.event.EventPriority
 import cn.nukkit.event.Listener
-import cn.nukkit.event.block.BlockBreakEvent
-import cn.nukkit.event.block.BlockPlaceEvent
 import cn.nukkit.event.entity.EntityDamageEvent
-import cn.nukkit.event.player.*
+import cn.nukkit.event.player.PlayerInteractEntityEvent
+import cn.nukkit.event.player.PlayerInteractEvent
+import cn.nukkit.event.player.PlayerJoinEvent
+import cn.nukkit.event.player.PlayerLoginEvent
 import cn.nukkit.event.plugin.PluginDisableEvent
 import cn.nukkit.item.Item
 import cn.nukkit.level.Location
@@ -24,12 +25,14 @@ import cn.nukkit.utils.DyeColor
 import cn.nukkit.utils.TextFormat
 import cn.nukkit.utils.TextFormat.*
 import com.elissamc.ElissaMC
-import com.elissamc.menu.GamesMenu
+import com.elissamc.menu.menus.CosmeticMenu
+import com.elissamc.menu.menus.GamesMenu
+import com.elissamc.menu.menus.MusicMenu
+import com.elissamc.menu.menus.StoreMenu
 import com.elissamc.runnabletasks.ServerTutorial
 import net.holograms.Holograms
 import java.io.File
 import java.net.MalformedURLException
-import java.net.URL
 import java.util.*
 
 class LobbyListener : Listener {
@@ -38,7 +41,10 @@ class LobbyListener : Listener {
     private val vanished = HashSet<UUID>()
 
     init {
+        Server.getInstance().pluginManager.registerEvents(CosmeticMenu(), ElissaMC.plugin)
         Server.getInstance().pluginManager.registerEvents(GamesMenu(), ElissaMC.plugin)
+        Server.getInstance().pluginManager.registerEvents(MusicMenu(), ElissaMC.plugin)
+        Server.getInstance().pluginManager.registerEvents(StoreMenu(), ElissaMC.plugin)
 
         val skin = Skin(File(ElissaMC.folder, "satan.png"))
         val loc = Location(-150.5, 83.0, 329.5, Server.getInstance().defaultLevel)
@@ -90,7 +96,7 @@ class LobbyListener : Listener {
     fun onPrePlayerJoin(event: PlayerLoginEvent) {
         val skin = event.player.skin
         try {
-            skin.cape = skin.Cape(URL("https://i.imgur.com/1d7QY2F.png"))
+            skin.cape = skin.Cape(File(ElissaMC.folder, "cape.png").readBytes())
         } catch (e: MalformedURLException) {
             e.printStackTrace()
         }
@@ -104,8 +110,6 @@ class LobbyListener : Listener {
         Server.getInstance().scheduler.scheduleDelayedTask(ElissaMC.plugin, object : NukkitRunnable() {
             override fun run() {
                 event.player.teleport(Server.getInstance().defaultLevel.safeSpawn)
-                event.player.sendTitle("" + BOLD + WHITE + "ElissaMC", YELLOW.toString() + "Winner Winner Chicken Dinner", 20, 40, 20)
-                event.player.sendActionBar(GOLD.toString() + "BETA STAGE v1.0")
             }
         }, 40)
         this.initPlayer(event.player)
@@ -117,8 +121,17 @@ class LobbyListener : Listener {
         }
     }
 
+    @EventHandler(ignoreCancelled = false, priority = EventPriority.HIGH)
+    fun onNPCEntityDamage(event: EntityDamageEvent) {
+        if (event.entity.namedTag.contains("npc")) {
+            if (event.entity.namedTag.getBoolean("npc")) {
+                event.setCancelled()
+            }
+        }
+    }
+
     @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGH)
-    fun onNPCEntityAttack(event: PlayerInteractEntityEvent) {
+    fun onNPCEntityRightClick(event: PlayerInteractEntityEvent) {
         if (event.entity.namedTag.contains("npc"))
             if (event.entity.namedTag.getBoolean("npc")) {
                 ServerTutorial(event.player).runTaskTimer(ElissaMC.plugin, 0, 20 * 5)
@@ -136,13 +149,13 @@ class LobbyListener : Listener {
         event.setCancelled()
         var player: Player = event.player
         if (s == "cosmetics")
-
+            CosmeticMenu.showMenu(player)
         if (s == "store")
-
+            StoreMenu.showMenu(player)
         if (s == "servers")
             GamesMenu.showMenu(player)
         if (s == "music")
-
+            MusicMenu.showMenu(player)
         if (s == "players")
             vanishPlayer(event.player)
     }
@@ -151,7 +164,7 @@ class LobbyListener : Listener {
         if (!vanished.contains(player.uniqueId)) {
             vanished.add(player.uniqueId)
             val item: Item = Item.get(Item.DYE, DyeColor.GRAY.dyeData).setCustomName("" + BOLD + WHITE + "Toggle Players" + RESET + DARK_GRAY + " | " + RED + "Vanished" + GRAY + " (Right Click)").setCustomBlockData(CompoundTag().putString("lobby", "players"))
-            player.inventory.setItem(7, null)
+            player.inventory.setItem(7, item)
             player.sendPopup(TextFormat.ITALIC.toString() + item.name)
             for (p in player.level.players.values) {
                 player.hidePlayer(p)

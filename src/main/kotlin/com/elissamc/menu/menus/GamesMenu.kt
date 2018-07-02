@@ -1,4 +1,4 @@
-package com.elissamc.menu
+package com.elissamc.menu.menus
 
 import cn.nukkit.Player
 import cn.nukkit.event.EventHandler
@@ -9,6 +9,7 @@ import cn.nukkit.item.Item
 import cn.nukkit.nbt.tag.CompoundTag
 import cn.nukkit.utils.DyeColor
 import com.elissamc.ElissaMC
+import com.elissamc.menu.ChestInventory
 
 class GamesMenu : Listener {
 
